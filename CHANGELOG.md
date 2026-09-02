@@ -5,6 +5,16 @@ All notable changes to the FitLat project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-09-02
+
+### Added
+- **First-load intro loader** (`src/components/fitlat/loader.tsx`): Six-column full-viewport black overlay shown once per browser session on the site's first load only (sessionStorage-gated — never replays on client-side navigation or a same-tab reload).
+  - The Fitlat mark traces itself once as a moving stroke segment (drawn with the Web Animations API against `stroke-dasharray`/`stroke-dashoffset`) that draws ahead and erases behind, never holding a fully filled state, tracing at a constant linear rate.
+  - Mark fades and scales in on mount, holds briefly once fully traced, then fades and scales out.
+  - The six columns exit upward right-to-left in a fixed 300ms total stagger, revealing the page beneath in a shutter-like reveal.
+  - Fully respects `prefers-reduced-motion`: skips the trace/column choreography and dismisses after a brief static hold.
+  - Announced to assistive tech via `role="status"`/`aria-live="polite"`; decorative layers marked `aria-hidden`.
+
 ## [0.1.0] - 2026-09-02
 
 ### Added

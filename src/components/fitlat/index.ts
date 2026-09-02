@@ -5,3 +5,4 @@ export { CoachCard } from "./coach-card";
 export { TestimonialCard } from "./testimonial-card";
 export { PricingCard } from "./pricing-card";
 export { BadgePill } from "./badge-pill";
+export { Loader } from "./loader";

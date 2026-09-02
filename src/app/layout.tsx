@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Loader } from "@/components/fitlat";
 
 // Inter is the documented fallback for the self-hosted General Sans / Neue
 // Montreal display face (see design-fitlat.md "Note on Font Substitutes").
@@ -17,7 +18,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={cn("h-full", "antialiased", "font-sans", inter.variable)}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Loader />
+        {children}
+      </body>
     </html>
   );
 }
