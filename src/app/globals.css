@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Bridges the legacy tailwind.config.js (fluid clamp() type scale, 4px
+   spacing scale, maxWidth measure tokens) into Tailwind v4's CSS-first
+   engine. Keep this config file — do not migrate its tuple-based fontSize
+   entries into @theme, v4's @theme font-size keys don't support the
+   [size, {lineHeight, letterSpacing, fontWeight}] tuple shape. */
+@config "../../tailwind.config.js";
+
+@import "../styles/tokens.css";
+@import "../styles/typography.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* ---- Fitlat brand colors -> Tailwind utilities (bg-canvas, text-ink, …) ---- */
+  --color-canvas: var(--canvas);
+  --color-canvas-soft: var(--canvas-soft);
+  --color-surface: var(--surface);
+  --color-surface-card: var(--surface-card);
+  --color-hairline: var(--hairline);
+
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-primary-active: var(--primary-active);
+  --color-on-primary: var(--on-primary);
+  --color-accent-metallic: var(--accent-metallic);
+
+  --color-status-success: var(--status-success);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-success-border: var(--status-success-border);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-warning-border: var(--status-warning-border);
+  --color-status-error: var(--status-error);
+  --color-status-error-bg: var(--status-error-bg);
+  --color-status-error-border: var(--status-error-border);
+  --color-status-info: var(--status-info);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-status-info-border: var(--status-info-border);
+
+  /* ---- shadcn semantic colors ---- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* ---- Shape scale (rounded-xs … rounded-full) ---- */
+  --radius-xs: var(--radius-scale-xs);
+  --radius-sm: var(--radius-scale-sm);
+  --radius-md: var(--radius-scale-md);
+  --radius-lg: var(--radius-scale-lg);
+  --radius-xl: var(--radius-scale-xl);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-full: var(--radius-scale-full);
+
+  /* ---- 8px spacing scale (p-xxs … p-xxl, alongside the space-* fluid tokens) ---- */
+  --spacing-xxs: var(--space-xxs);
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-xxl: var(--space-xxl);
+
+  /* ---- Motion ---- */
+  --ease-fitlat: var(--motion-ease);
+
+  /* metallic-divider's shimmer sweep — the one other bit of motion besides
+     the hero reveal, deliberately quieter (see MetallicDivider component). */
+  --animate-fitlat-shimmer: fitlat-shimmer var(--duration-slow) var(--motion-ease) 1;
+  @keyframes fitlat-shimmer {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(300%);
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}

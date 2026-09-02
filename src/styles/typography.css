@@ -1,0 +1,60 @@
+@layer base {
+  html {
+    font-optical-sizing: auto;
+  }
+}
+
+@layer components {
+  /* Headings */
+  .text-h1 {
+    @apply text-h1;
+    text-wrap: balance;
+    max-width: theme('maxWidth.measure-display');
+  }
+  .text-h2 {
+    @apply text-h2;
+    text-wrap: balance;
+    max-width: theme('maxWidth.measure-display');
+  }
+  .text-h3 {
+    @apply text-h3;
+    text-wrap: balance;
+    max-width: theme('maxWidth.measure-display');
+  }
+  .text-h4 {
+    @apply text-h4;
+    text-wrap: balance;
+    max-width: theme('maxWidth.measure-display');
+  }
+
+  /* Body */
+  .text-body-lg {
+    @apply text-body-lg;
+    text-wrap: pretty;
+    max-width: theme('maxWidth.measure');
+  }
+  .text-body {
+    @apply text-body;
+    text-wrap: pretty;
+    max-width: theme('maxWidth.measure');
+  }
+  .text-body-accent {
+    @apply text-body font-body-accent;
+  }
+  .text-small {
+    @apply text-small;
+  }
+  .text-caption {
+    @apply text-caption;
+  }
+
+  /* Data / numeric text */
+  .text-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* All-caps label (small/caption set uppercase) */
+  .text-caps {
+    @apply uppercase tracking-caps;
+  }
+}
