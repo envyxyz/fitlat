@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { PlusSignIcon } from "@hugeicons/core-free-icons";
+import { PlusSignIcon, Clock01Icon, Call02Icon, InstagramIcon, NewTwitterIcon } from "@hugeicons/core-free-icons";
 import { MenuToggle } from "./menu-toggle";
 import { NAV_ITEMS, FOOTER_CONTACT } from "@/lib/nav";
 import { cn } from "@/lib/utils";
@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 // waits this long after the panel starts opening before it appears, and the
 // panel waits the text's own close duration before it starts sliding away —
 // so the two never move at the same time in either direction.
-const PANEL_DURATION = 350;
-const TEXT_STAGGER = 50;
-const TEXT_CLOSE_DURATION = 180;
+const PANEL_DURATION = 500;
+const TEXT_STAGGER = 70;
+const TEXT_CLOSE_DURATION = 280;
 
 /**
  * Full-screen mobile nav. Built on Base UI's `Dialog` for focus trap, scroll
@@ -92,15 +92,84 @@ export function MobileMenu() {
             ))}
           </nav>
 
-          <div className="flex flex-col gap-xxs border-t border-hairline px-space-body-lg py-space-h4 text-body text-ink-muted">
-            <MenuLine index={NAV_ITEMS.length}>{FOOTER_CONTACT.hours}</MenuLine>
-            <MenuLine index={NAV_ITEMS.length + 1}>{FOOTER_CONTACT.phone}</MenuLine>
+          <div className="flex flex-col gap-space-md border-t border-hairline px-space-body-lg py-space-h3 text-body">
+            {/* Hours Block */}
+            <MenuLine index={NAV_ITEMS.length}>
+              <div className="flex items-start gap-space-sm text-ink-muted">
+                <HugeiconsIcon
+                  icon={Clock01Icon}
+                  size={16}
+                  strokeWidth={1.5}
+                  className="mt-0.5 shrink-0 text-primary/75"
+                  aria-hidden="true"
+                />
+                <div className="flex flex-col gap-0.5 text-caption leading-relaxed">
+                  <span className="text-ink-secondary font-medium">
+                    Mon–Fri 5:00 AM – 10:00 PM
+                  </span>
+                  <span className="text-ink-muted">
+                    Sat–Sun 7:00 AM – 8:00 PM
+                  </span>
+                </div>
+              </div>
+            </MenuLine>
+
+            {/* Phone Block */}
+            <MenuLine index={NAV_ITEMS.length + 1}>
+              <div className="flex items-center gap-space-sm text-ink-muted">
+                <HugeiconsIcon
+                  icon={Call02Icon}
+                  size={16}
+                  strokeWidth={1.5}
+                  className="shrink-0 text-primary/75"
+                  aria-hidden="true"
+                />
+                <a
+                  href={`tel:${FOOTER_CONTACT.phone.replace(/[^0-9]/g, "")}`}
+                  className="text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)] tracking-wide"
+                >
+                  {FOOTER_CONTACT.phone}
+                </a>
+              </div>
+            </MenuLine>
+
+            {/* Social Media Channels */}
             <MenuLine index={NAV_ITEMS.length + 2}>
-              <span className="flex gap-sm">
-                {FOOTER_CONTACT.socials.map((social) => (
-                  <span key={social.label}>{social.handle}</span>
-                ))}
-              </span>
+              <div className="flex items-center gap-space-lg pt-space-xxs text-ink-muted">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Fitlat on Instagram"
+                  className="flex items-center gap-space-xs text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)]"
+                >
+                  <HugeiconsIcon
+                    icon={InstagramIcon}
+                    size={16}
+                    strokeWidth={1.5}
+                    className="shrink-0 text-primary/75"
+                    aria-hidden="true"
+                  />
+                  <span>@fitlat</span>
+                </a>
+                <span className="h-3 w-px bg-hairline" aria-hidden="true" />
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Fitlat on X (Twitter)"
+                  className="flex items-center gap-space-xs text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)]"
+                >
+                  <HugeiconsIcon
+                    icon={NewTwitterIcon}
+                    size={16}
+                    strokeWidth={1.5}
+                    className="shrink-0 text-primary/75"
+                    aria-hidden="true"
+                  />
+                  <span>@fitlatgym</span>
+                </a>
+              </div>
             </MenuLine>
           </div>
         </Dialog.Popup>

@@ -9,7 +9,7 @@ interface MenuToggleProps {
 
 /**
  * Three-bar burger that morphs into a cross — the "shock animation" curve
- * (`--motion-ease-shock`, 350ms) drives every bar so the icon and the panel
+ * (`--motion-ease-shock`, 500ms) drives every bar so the icon and the panel
  * it drives read as one gesture. Hand-drawn with three `<span>`s rather than
  * an icon glyph: a glyph swap can't morph, it can only cross-fade.
  */

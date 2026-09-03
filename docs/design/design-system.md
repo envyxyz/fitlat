@@ -89,14 +89,16 @@ apply it elsewhere without calling it out as "the shock animation" the way
 this exception is.
 
 **Documented exception — the intro's own timeline.** `Loader` runs a single
-~5s GSAP timeline (settle, two erase passes, a final draw that persists, a
-hold, then the flight into the header) built from its own local constants,
-not `--duration-fast`/`--duration-slow` — a one-shot, once-per-session
-sequence is a different animation category than a repeatable
+~4s GSAP timeline (settle, two continuous constant-velocity erase passes, a
+final draw that persists, a hold, then the flight into the header) built from
+its own local constants, not `--duration-fast`/`--duration-slow` — a one-shot,
+once-per-session sequence is a different animation category than a repeatable
 transition/micro-interaction, the thing the two-duration rule is scoped to.
-The flight itself still eases on `--motion-ease` exactly (registered as a
-GSAP `CustomEase` from the same cubic-bezier), so the handoff into the
-header lands on the site's one curve.
+The mark traces its head circle and body as two separate paths in lockstep
+at constant velocity (no easing stops or inter-lap pauses), and the flight
+itself eases on `--motion-ease` exactly (registered as a GSAP `CustomEase`
+from the same cubic-bezier), so the handoff into the header lands on the
+site's one curve.
 
 `@media (prefers-reduced-motion: reduce)` is wired globally in
 `tokens.css` — it collapses all animation/transition durations to near-zero.

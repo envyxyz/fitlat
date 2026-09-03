@@ -3,10 +3,10 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { isIntroDone, markIntroDone, subscribeIntroDone } from "@/lib/intro";
 
-// Matches useIntroReveal's failsafe: never let a loader error strand the
+// Matches useIntroFlight's failsafe: never let a loader error strand the
 // header logo at opacity:0 forever. Not a real countdown — markIntroDone()
-// normally fires ~4.7s in, on the flight's own completion.
-const FAILSAFE_DELAY = 7000;
+// normally fires ~4.0s in (settle + 2 laps + final lap + hold + flight).
+const FAILSAFE_DELAY = 6000;
 const getServerSnapshot = () => false;
 
 /**

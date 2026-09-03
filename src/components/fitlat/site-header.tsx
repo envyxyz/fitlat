@@ -11,17 +11,18 @@ import { NAV_ITEMS } from "@/lib/nav";
 import { useNavSurface } from "@/hooks/use-nav-surface";
 import { useIntroReveal } from "@/hooks/use-intro-reveal";
 import { useIntroDone } from "@/hooks/use-intro-done";
+import { useIntroFlight } from "@/hooks/use-intro-flight";
 import { useScrolled } from "@/hooks/use-scrolled";
 import { useAutoHideHeader } from "@/hooks/use-auto-hide-header";
 import { cn } from "@/lib/utils";
 
-const HEADER_HEIGHT = 84;
+const HEADER_HEIGHT = 72;
 
 // Translucent + blurred rather than a flat fill — the header reads as glass
 // over whatever section is under it, on every breakpoint, not just the
 // desktop "island" state.
 const SURFACE_CLASS: Record<string, string> = {
-  transparent: "bg-transparent border-transparent",
+  transparent: "bg-canvas/40 border-transparent backdrop-blur-xl",
   canvas: "bg-canvas/70 border-hairline backdrop-blur-xl",
   "canvas-soft": "bg-canvas-soft/70 border-hairline backdrop-blur-xl",
 };
@@ -35,12 +36,17 @@ const SURFACE_CLASS: Record<string, string> = {
  * breakpoints (`data-intro-logo-target`, `useIntroDone`).
  *
  * On first load the whole bar sits off-screen (`-translate-y-full`) and
- * slides down in sync with the loader's logo landing (`useIntroDone`) — on
- * a returning visit within the same session that state is already true on
- * mount, so no slide plays. `Loader` corrects for the header still being
- * off-screen at that instant when it measures the flight's landing spot
- * (see its `tl.add` step), so the mark still flies to the header's true
- * resting position rather than wherever it's hidden.
+ * slides down the moment the loader's mark starts its flight toward the header
+ * (`useIntroFlight`) — concurrent with the mark, so the bar is already in
+ * place when the mark arrives, enabling a true crossfade. The header's own
+ * logo fades in on `useIntroDone` (flight landing), not on flight start, so
+ * there's no early flash. On a returning visit within the same session both
+ * signals are already true on mount, so no slide plays.
+ *
+ * `Loader` corrects for the header still being off-screen at measurement time
+ * (see its flight `tl.add` step) — it neutralises both `transform` and
+ * `translate` before reading `getBoundingClientRect()`, so the destination
+ * is the true resting position regardless of the bar's current slide state.
  *
  * On desktop, once the page scrolls past a small threshold, the inner bar
  * contracts into a floating glass "island" (`useScrolled`) — a CSS-only
@@ -51,6 +57,7 @@ const SURFACE_CLASS: Record<string, string> = {
 export function SiteHeader() {
   const revealed = useIntroReveal();
   const logoLanded = useIntroDone();
+  const flightStarted = useIntroFlight();
   const surface = useNavSurface(HEADER_HEIGHT);
   const scrolled = useScrolled(24);
   const mobileHidden = useAutoHideHeader();
@@ -63,11 +70,11 @@ export function SiteHeader() {
       style={{
         height: HEADER_HEIGHT,
         transition:
-          "transform var(--duration-slow) var(--motion-ease), background-color var(--duration-fast) var(--motion-ease), border-color var(--duration-fast) var(--motion-ease), backdrop-filter var(--duration-fast) var(--motion-ease)",
+          "translate var(--duration-slow) var(--motion-ease), transform var(--duration-slow) var(--motion-ease), background-color var(--duration-fast) var(--motion-ease), border-color var(--duration-fast) var(--motion-ease), backdrop-filter var(--duration-fast) var(--motion-ease)",
       }}
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b md:translate-y-0",
-        !logoLanded ? "-translate-y-full" : mobileHidden ? "-translate-y-full" : "translate-y-0",
+        !flightStarted ? "-translate-y-full" : mobileHidden ? "-translate-y-full" : "translate-y-0",
         SURFACE_CLASS[surface],
         scrolled && "md:border-transparent md:bg-transparent md:backdrop-blur-none"
       )}
@@ -95,7 +102,10 @@ export function SiteHeader() {
           href="#"
           aria-label="Fitlat home"
           data-intro-logo-target
-          className="col-start-2 flex size-8 items-center justify-center justify-self-center transition-opacity duration-[var(--duration-fast)] ease-[var(--motion-ease)] md:hidden"
+          className={cn(
+            "col-start-2 flex size-11 items-center justify-center justify-self-center transition-opacity duration-[var(--duration-fast)] ease-[var(--motion-ease)] md:hidden",
+            scrolled && "md:size-9"
+          )}
           style={{ opacity: logoLanded ? 1 : 0 }}
         >
           <LogoMark className="size-full" />
@@ -104,7 +114,10 @@ export function SiteHeader() {
           href="#"
           aria-label="Fitlat home"
           data-intro-logo-target
-          className="hidden size-8 transition-opacity duration-[var(--duration-fast)] ease-[var(--motion-ease)] md:block"
+          className={cn(
+            "hidden size-11 transition-opacity duration-[var(--duration-fast)] ease-[var(--motion-ease)] md:block",
+            scrolled && "md:size-9"
+          )}
           style={{ opacity: logoLanded ? 1 : 0 }}
         >
           <LogoMark className="size-full" />

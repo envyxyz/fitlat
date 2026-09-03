@@ -4,13 +4,12 @@ import { LogoMark } from "./logo-mark";
 
 /**
  * Site Footer — Minimal & Practical Parallax Sticky Reveal Footer
- * Features:
- * - Desktop: ~45vh (<50%), single-line full-width FITLAT ©
- * - Phone: 100dvh, 96px top clearance (immune to fixed header overlap)
- * - Enlarged flush-left brand logo and tailored subtext
- * - Consistent 2em vertical spacing between mobile navigation sections
- * - Massive, proportional 2-line FIT / LAT © wordmark filling mobile width
- * - Perfectly centered vector copyright badge
+ * Refinements:
+ * - Desktop height: 55vh (min-h: 440px)
+ * - Parallel & equal-height top row: left text (decreased) matches link columns (increased size & gap)
+ * - Desktop FITLAT wordmark: 100% center-aligned with copyright mark pinned next to the top of the T
+ * - Copyright circle: C glyph mathematically centered via dominantBaseline="central"
+ * - Mobile: 100dvh with header clearance and 2-line responsive wordmark
  */
 export function SiteFooter() {
   return (
@@ -18,45 +17,45 @@ export function SiteFooter() {
       id="visit"
       data-nav-surface="canvas-soft"
       aria-label="Site footer"
-      className="relative w-full h-[100dvh] md:h-[45vh] md:min-h-[380px] md:max-h-[460px] overflow-hidden"
+      className="relative w-full h-[100dvh] md:h-[55vh] md:min-h-[440px] overflow-hidden"
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
-      <div className="fixed bottom-0 left-0 w-full h-[100dvh] md:h-[45vh] md:min-h-[380px] md:max-h-[460px] bg-canvas text-ink-secondary flex flex-col justify-between overflow-hidden">
+      <div className="fixed bottom-0 left-0 w-full h-[100dvh] md:h-[55vh] md:min-h-[440px] bg-canvas text-ink-secondary flex flex-col justify-between overflow-hidden">
         {/* Seamless Ultra-Subtle Granite Texture Overlay */}
         <div
           className="absolute inset-0 bg-[url('/images/textures/granite-seamless.jpg')] bg-repeat bg-[size:500px_500px] opacity-[0.07] mix-blend-screen pointer-events-none"
           aria-hidden="true"
         />
 
-        {/* Inner Content Container with 96px top headroom on mobile to clear fixed header */}
-        <div className="relative z-10 flex flex-col justify-between h-full max-w-[1440px] mx-auto w-full px-space-body-lg md:px-lg lg:px-xxl pt-[92px] sm:pt-[96px] md:pt-space-h2 pb-space-sm md:pb-space-small">
-          {/* Top Section: Fitlat Logo + Tagline & Navigation */}
+        {/* Inner Content Container */}
+        <div className="relative z-10 flex flex-col justify-between h-full max-w-[1440px] mx-auto w-full px-space-body-lg md:px-lg lg:px-xxl pt-[92px] sm:pt-[96px] md:pt-10 pb-space-sm md:pb-2">
+          {/* Top Section: Fitlat Logo + Tagline (Left) & Navigation (Right) — parallel & equal in height */}
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-y-space-h2 w-full">
             {/* Left: Fitlat Brand LogoMark & Headline */}
             <div className="flex flex-col items-start text-left">
-              {/* Fitlat Logo (Enlarged and flush-left) */}
+              {/* Fitlat Logo */}
               <div
-                className="size-10 md:size-8 flex items-center justify-start text-primary"
+                className="size-9 md:size-7 flex items-center justify-start text-primary"
                 aria-hidden="true"
               >
                 <LogoMark className="size-full" />
               </div>
 
-              {/* Tagline tailored to Fitlat */}
-              <h2 className="mt-space-sm text-h4 sm:text-h3 font-medium tracking-tight text-ink leading-snug [text-wrap:unset] max-w-none text-left">
+              {/* Tagline tailored to Fitlat (decreased slightly to match link block height) */}
+              <h2 className="mt-2.5 text-h4 md:text-[21px] lg:text-[22px] font-medium tracking-tight text-ink leading-[1.32] [text-wrap:unset] max-w-none text-left">
                 <span className="block whitespace-nowrap">Fitlat is the standard</span>
                 <span className="block whitespace-nowrap">you’ve been training for.</span>
               </h2>
             </div>
 
-            {/* Right: Navigation Grid (Consistent 2em vertical spacing on mobile) */}
+            {/* Right: Navigation Grid (increased link size & gap to balance height with left text) */}
             <div className="flex flex-col gap-y-space-h2 sm:grid sm:grid-cols-3 sm:gap-space-h1 lg:gap-space-h2">
               {/* Column 1: USEFUL */}
-              <div className="flex flex-col gap-space-xs">
-                <span className="text-caption text-caps text-ink-muted font-medium">
+              <div className="flex flex-col gap-3">
+                <span className="text-caption text-caps text-ink-muted font-semibold tracking-wider">
                   USEFUL
                 </span>
-                <ul className="flex flex-col space-y-space-xs text-body text-ink-secondary">
+                <ul className="flex flex-col space-y-2.5 text-body-lg text-ink-secondary">
                   <li>
                     <a
                       href="#about"
@@ -77,11 +76,11 @@ export function SiteFooter() {
               </div>
 
               {/* Column 2: LEGAL */}
-              <div className="flex flex-col gap-space-xs">
-                <span className="text-caption text-caps text-ink-muted font-medium">
+              <div className="flex flex-col gap-3">
+                <span className="text-caption text-caps text-ink-muted font-semibold tracking-wider">
                   LEGAL
                 </span>
-                <ul className="flex flex-col space-y-space-xs text-body text-ink-secondary">
+                <ul className="flex flex-col space-y-2.5 text-body-lg text-ink-secondary">
                   <li>
                     <a
                       href="#"
@@ -102,11 +101,11 @@ export function SiteFooter() {
               </div>
 
               {/* Column 3: UPDATES */}
-              <div className="flex flex-col gap-space-xs">
-                <span className="text-caption text-caps text-ink-muted font-medium">
+              <div className="flex flex-col gap-3">
+                <span className="text-caption text-caps text-ink-muted font-semibold tracking-wider">
                   UPDATES
                 </span>
-                <ul className="flex flex-col space-y-space-xs text-body text-ink-secondary">
+                <ul className="flex flex-col space-y-2.5 text-body-lg text-ink-secondary">
                   <li>
                     <a
                       href="https://twitter.com"
@@ -167,23 +166,24 @@ export function SiteFooter() {
                 LAT
               </text>
 
-              {/* Perfectly Center-Aligned Copyright Symbol beside LAT */}
-              <g transform="translate(295, 175)">
+              {/* Copyright Symbol — centered C inside circle, aligned to top of T */}
+              <g transform="translate(270, 140)">
                 <circle
-                  cx="25"
-                  cy="25"
-                  r="22"
+                  cx="14"
+                  cy="14"
+                  r="12"
                   stroke="currentColor"
-                  strokeWidth="3.5"
+                  strokeWidth="2.5"
                   fill="none"
                 />
                 <text
-                  x="25"
-                  y="32"
+                  x="14"
+                  y="14"
                   textAnchor="middle"
+                  dominantBaseline="central"
                   fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
-                  fontSize="22"
-                  fontWeight="800"
+                  fontSize="13"
+                  fontWeight="700"
                   fill="currentColor"
                 >
                   C
@@ -192,51 +192,45 @@ export function SiteFooter() {
             </svg>
           </div>
 
-          {/* Bottom Section - Desktop (≥md): Single-Line Full-Width FITLAT © Wordmark */}
-          <div className="hidden md:block w-full mt-auto select-none overflow-hidden" aria-hidden="true">
-            <svg
-              viewBox="0 0 1440 180"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-auto text-ink-secondary overflow-visible"
-              preserveAspectRatio="xMidYMid meet"
-            >
-              {/* Proportional FITLAT text */}
-              <text
-                x="0"
-                y="155"
-                fontFamily="var(--font-sans), Inter, system-ui, -apple-system, sans-serif"
-                fontSize="195"
-                fontWeight="800"
-                letterSpacing="-0.035em"
-                fill="currentColor"
-              >
+          {/* Bottom Section - Desktop (≥md): Center-Aligned FITLAT Wordmark with Centered Copyright Icon */}
+          <div className="hidden md:flex w-full mt-auto items-end justify-center select-none overflow-hidden pb-1" aria-hidden="true">
+            <div className="relative inline-flex items-center justify-center">
+              {/* Perfectly Center-Aligned FITLAT Wordmark */}
+              <span className="font-sans font-[850] text-[13vw] 2xl:text-[195px] tracking-[-0.035em] leading-[0.78] text-ink-secondary text-center">
                 FITLAT
-              </text>
+              </span>
 
-              {/* Circled Copyright Icon beside the last T */}
-              <g transform="translate(1290, 18)">
-                <circle
-                  cx="32"
-                  cy="32"
-                  r="28"
-                  stroke="currentColor"
-                  strokeWidth="4"
+              {/* Copyright Badge — pinned next to the top vertical line of the T */}
+              <div className="absolute left-[calc(100%+8px)] lg:left-[calc(100%+12px)] top-[14%] -translate-y-1/2">
+                <svg
+                  className="size-6 lg:size-7 xl:size-8 text-ink-secondary"
+                  viewBox="0 0 36 36"
                   fill="none"
-                />
-                <text
-                  x="32"
-                  y="41"
-                  textAnchor="middle"
-                  fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
-                  fontSize="30"
-                  fontWeight="800"
-                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  C
-                </text>
-              </g>
-            </svg>
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="15"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    fill="none"
+                  />
+                  <text
+                    x="18"
+                    y="18"
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
+                    fontSize="17"
+                    fontWeight="700"
+                    fill="currentColor"
+                  >
+                    C
+                  </text>
+                </svg>
+              </div>
+            </div>
           </div>
 
           {/* Hidden Semantic Tag for Screen Readers & SEO */}

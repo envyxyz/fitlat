@@ -78,7 +78,7 @@
      silent default. See docs/design/design-system.md "Motion" section for
      the CLAUDE.md exception this documents. */
   --motion-ease-shock: cubic-bezier(0.804, 0.005, 0.55, 0.666);
-  --duration-shock: 350ms;
+  --duration-shock: 500ms;
 
   /* ---- 8px spacing scale ---- */
   --space-xxs: 4px;

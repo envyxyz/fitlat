@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Logo path fidelity** (`src/components/fitlat/logo-mark.tsx`): Re-traced SVG path from JPEG source using 8× upsample + line-fit + corner-intersection (IoU 0.973 vs 0.909 previously). Sharp corners restored, head circle center/radius corrected.
+- **Intro path origin dot artifacts** (`src/components/fitlat/loader.tsx`): Fixed visible round-dot artifacts at path start coordinates during stroke animation caused by zero-length initial dash under `stroke-linecap: round`. Arc rendering now uses `strokeDashoffset = -tail` with single dash.
+- **Intro logo disappears during flight** (`src/components/fitlat/loader.tsx`): Flight target measurement now compensates for Tailwind v4's standalone `translate` CSS property in addition to `transform`.
+- **Header slide-down never animates** (`src/components/fitlat/site-header.tsx`): Added `translate` to the header's inline `transition` property list — Tailwind v4 emits standalone `translate`, not `transform`.
+
+### Changed
+- **Intro duration & motion model** (`src/components/fitlat/loader.tsx`): 5.00s → 4.00s. Continuous constant-velocity trace replaces stitched `power1.inOut` clips with dead gaps. Dual `<path>` lockstep tracing eliminates the circle-to-body teleport seam.
+- **Header logo size** (`src/components/fitlat/site-header.tsx`): 32px (`size-8`) → 44px (`size-11`), stepping down to 36px (`md:size-9`) in scrolled island state. Flight scale delta reduced from 0.33× to 0.46×.
+- **Flight handoff synchronization** (`src/hooks/use-intro-flight.ts`, `src/lib/intro.ts`, `src/components/fitlat/site-header.tsx`): Header slides down concurrently with flight via new `useIntroFlight` hook rather than after landing. True crossfade replaces held beat.
+
 ## [0.3.0] - 2026-09-03
 
 ### Added

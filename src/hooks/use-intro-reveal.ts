@@ -4,11 +4,11 @@ import { useLayoutEffect, useState } from "react";
 import { isIntroDone, subscribeIntroDone } from "@/lib/intro";
 
 const POST_LOADER_DELAY = 200; // --duration-fast, matches the loader's own exit gap
-// The intro is a ~5s GSAP timeline (settle + 2 erase passes + final draw +
-// hold + flight — see loader.tsx); this only needs to be safely past that,
+// The intro is a ~4s GSAP timeline (settle + 2 continuous erase passes +
+// final draw + hold + flight — see loader.tsx); this only needs to be safely past that,
 // never a real countdown, since `markIntroDone()` normally fires well
-// before it on the flight's own completion.
-const FAILSAFE_DELAY = 7000; // never let a loader error strand the hero at opacity:0
+// before it on the flight's own completion (~4.0s).
+const FAILSAFE_DELAY = 6000; // never let a loader error strand the hero at opacity:0
 
 /**
  * True once the hero's entrance reveal should run: 200ms after the intro
