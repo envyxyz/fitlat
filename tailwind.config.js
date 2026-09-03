@@ -6,6 +6,10 @@ module.exports = {
       // Fluid type scale, interpolated 390px -> 1440px, 16px root.
       // fontSize[token] = [clamp(min, preferred, max), { lineHeight, letterSpacing, fontWeight }]
       fontSize: {
+        display: [
+          'clamp(3rem, 1.7143rem + 5.7143vw, 7rem)',
+          { lineHeight: '0.95', letterSpacing: '-0.05em', fontWeight: '700' },
+        ],
         h1: [
           'clamp(2.75rem, 1.9143rem + 3.4286vw, 5rem)',
           { lineHeight: '1', letterSpacing: 'clamp(-0.06em, -0.0394em + -0.0014vw, -0.045em)', fontWeight: '700' },

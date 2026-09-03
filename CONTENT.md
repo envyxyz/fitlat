@@ -7,7 +7,7 @@
 
 ## Hero
 - Headline: Train like it matters.
-- Positioning sentence: Fitlat is a strength and conditioning gym for people who show up on purpose — students fitting sessions between classes, professionals training before work, athletes who compete for a living. No fluff, no mirrors-and-music routine. Just the work.
+- Positioning sentence: A strength and conditioning gym for people who show up on purpose. No fluff, no mirrors-and-music routine. Just the work.
 - Primary CTA label: Book a Tour
 - Secondary CTA label (if any): See Membership
 
@@ -16,7 +16,7 @@
 - Stat 2 (label + number): Floor space — 14,000 sq ft
 - Stat 3 (label + number): Years open — 6
 - Stat 4 (label + number, optional): Coached sessions weekly — 90+
-- Metallic divider notes (behavior/motion intent): A brushed-steel bar spanning the section break. On scroll into view it catches a single light sweep once, left to right, tied to GSAP ScrollTrigger progress rather than looping — this is the site's one signature moment, so it shouldn't repeat itself into wallpaper. Under prefers-reduced-motion it renders static with a fixed highlight, no sweep.
+- Metallic divider notes (behavior/motion intent): A brushed-steel bar spanning the section break. On scroll into view it catches a single light sweep once, left to right, tied to GSAP ScrollTrigger progress rather than looping. Deliberately subordinate — the site's one signature moment is the hero's motion-blurred imagery resolving into focus on load (see design-system.md), so this sweep should stay quiet rather than compete with it. Under prefers-reduced-motion it renders static with a fixed highlight, no sweep.
 
 ## Gallery
 - Section heading: Where the work happens

@@ -1,23 +1,37 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Loader } from "@/components/fitlat";
 
-// Inter is the documented fallback for the self-hosted General Sans / Neue
-// Montreal display face (see design-fitlat.md "Note on Font Substitutes").
-// Swap this for a next/font/local General Sans once the licensed font files
-// are added under public/fonts/.
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-condensed",
+});
 
 export const metadata: Metadata = {
   title: "Fitlat",
   description: "Fitlat — train with intent.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={cn("h-full", "antialiased", "font-sans", inter.variable)}>
+    <html
+      lang="en"
+      className={cn(
+        "h-full",
+        "antialiased",
+        "font-sans",
+        inter.variable,
+        bebasNeue.variable
+      )}
+    >
       <body className="min-h-full flex flex-col">
         <Loader />
         {children}

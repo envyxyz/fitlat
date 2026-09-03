@@ -5,6 +5,13 @@
 }
 
 @layer components {
+  /* Display */
+  .text-display {
+    @apply text-display;
+    text-wrap: balance;
+    max-width: theme('maxWidth.measure-display');
+  }
+
   /* Headings */
   .text-h1 {
     @apply text-h1;
@@ -56,5 +63,10 @@
   /* All-caps label (small/caption set uppercase) */
   .text-caps {
     @apply uppercase tracking-caps;
+  }
+
+  /* Condensed display font for heritage cards */
+  .font-condensed {
+    font-family: var(--font-condensed), Impact, "Arial Narrow", sans-serif;
   }
 }

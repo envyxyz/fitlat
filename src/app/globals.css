@@ -49,6 +49,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-heading: var(--font-sans);
+  --font-condensed: var(--font-condensed);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -88,6 +89,7 @@
 
   /* ---- Motion ---- */
   --ease-fitlat: var(--motion-ease);
+  --ease-shock: var(--motion-ease-shock);
 
   /* metallic-divider's shimmer sweep — the one other bit of motion besides
      the hero reveal, deliberately quieter (see MetallicDivider component). */
@@ -106,10 +108,18 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  body {
+    @apply bg-background text-foreground;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
   }
 }

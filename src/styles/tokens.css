@@ -69,7 +69,16 @@
      otherwise collide with the raw token name. */
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --duration-fast: 200ms;
-  --duration-slow: 600ms;
+  --duration-slow: 850ms;
+
+  /* "Shock" animation — a deliberate second curve/duration, reserved for the
+     mobile menu's burger-to-cross morph, full-screen panel, and text reveal
+     (an abrupt hang-then-slam ease-in, not the site's smooth ease-out).
+     Reused wherever a "shock animation" is explicitly called for — never a
+     silent default. See docs/design/design-system.md "Motion" section for
+     the CLAUDE.md exception this documents. */
+  --motion-ease-shock: cubic-bezier(0.804, 0.005, 0.55, 0.666);
+  --duration-shock: 350ms;
 
   /* ---- 8px spacing scale ---- */
   --space-xxs: 4px;

@@ -1,177 +1,258 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { CustomEase } from "gsap/CustomEase";
+import { LOGO_PATH } from "./logo-mark";
+import { markIntroDone, resetIntroDone } from "@/lib/intro";
+
+gsap.registerPlugin(CustomEase);
+// Mirrors --motion-ease exactly, so the flight lands on the same curve as
+// everything else — the loader is the site's one documented exception on
+// *duration* (see tokens.css), not on easing.
+CustomEase.create("fitlatEase", "M0,0 C0.22,1 0.36,1 1,1");
 
 /**
- * First-load intro loader. Six full-height black columns cover the viewport
- * while the mark traces itself once (a moving stroke segment, drawing ahead
- * and erasing behind — never a filled/held state), then the mark fades out
- * and the columns exit upward right-to-left in a fixed 300ms stagger,
- * revealing the page underneath.
+ * The site's one signature animated moment (see design-system.md "Motion").
+ * A single ~5s GSAP timeline, once per browser session, first tab-open only:
  *
- * Shown once per browser session (sessionStorage-gated): first tab open only,
- * never on client-side navigation or a reload within the same tab session.
+ *   settle -> trace (erase) -> breath -> trace (erase) -> breath
+ *   -> trace (draws and stays) -> hold -> flight to the header -> handoff
+ *
+ * The first two traces draw ahead and erase behind, like the existing
+ * intro; the third is the same stroke sweep but never erases, so the mark
+ * is left fully drawn. It then flies — position, scale, stroke-to-fill
+ * crossfade — into whichever `[data-intro-logo-target]` is laid out at
+ * that moment (the header swaps which of its two copies is visible per
+ * breakpoint), while the black backdrop fades away behind it. The header's
+ * own copy fades in right under the arriving mark (`useIntroDone`) before
+ * this overlay unmounts, so the handoff has no visible pop.
+ *
+ * Scroll is locked (both `overflow: hidden` and a wheel/touch guard) for
+ * the full run and released the moment the mark lands, not before.
  */
 
-const LOGO_PATH =
-  "M 108.3 40.5 A 11.3 11.3 0 1 0 85.7 40.5 A 11.3 11.3 0 1 0 108.3 40.5 Z " +
-  "M 33 108 L 51 108 L 69 89 L 73 89 L 95 107 L 103 107 L 106 104 L 106 78 L 102 65 L 89 57 L 59 57 L 47 69 L 87 69 L 92 74 L 93 86 L 77 76 L 65 76 L 59 79 Z";
-
-const COLUMN_COUNT = 6;
-const LOGO_ENTER_DURATION = 240;
-const TRACE_DURATION = 1000;
-const HOLD_DURATION = 220;
-const LOGO_EXIT_DURATION = 220;
-const EXIT_TOTAL = 300;
-const EXIT_COLUMN_DURATION = 180;
-const EXIT_STEP = (EXIT_TOTAL - EXIT_COLUMN_DURATION) / (COLUMN_COUNT - 1);
-const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 const SESSION_KEY = "fitlat-loader-shown";
+const CALM_EASE = "power1.inOut";
+const FLIGHT_EASE = "fitlatEase";
 
-type Phase = "enter" | "trace" | "hold" | "exit";
+const SETTLE_DURATION = 0.28;
+const PASS_DURATION = 1.05;
+const BREATH_DURATION = 0.16;
+const FINAL_DRAW_DURATION = 1.15;
+const HOLD_DURATION = 0.28;
+const FLIGHT_DURATION = 0.65;
+const HANDOFF_HOLD = 0.22;
+const REDUCED_MOTION_HOLD = 400;
+
+const TRAIL_MAX = 60;
+const TRAIL_RATIO = 0.15;
 
 export function Loader() {
-  const [shouldRender, setShouldRender] = useState(true);
-  const [phase, setPhase] = useState<Phase>("enter");
-  const pathRef = useRef<SVGPathElement>(null);
-
-  // Flip enter -> trace on the next frame so the logo's opacity/scale
-  // transition actually runs instead of starting already at its end state.
-  useEffect(() => {
-    if (phase !== "enter") return;
-    const raf = requestAnimationFrame(() => setPhase("trace"));
-    return () => cancelAnimationFrame(raf);
-  }, [phase]);
+  const [shouldRender, setShouldRender] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return !sessionStorage.getItem(SESSION_KEY);
+  });
+  const markWrapRef = useRef<HTMLDivElement>(null);
+  const strokePathRef = useRef<SVGPathElement>(null);
+  const fillRef = useRef<SVGSVGElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (sessionStorage.getItem(SESSION_KEY)) {
-      setShouldRender(false);
+    if (!shouldRender) {
+      markIntroDone();
       return;
     }
     sessionStorage.setItem(SESSION_KEY, "1");
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const path = pathRef.current;
-    let cancelled = false;
-    const timers: number[] = [];
+    const preventScroll = (event: Event) => event.preventDefault();
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
 
-    const finish = () => {
-      document.body.style.overflow = previousOverflow;
-      if (!cancelled) setShouldRender(false);
+    const releaseScroll = () => {
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      window.removeEventListener("wheel", preventScroll);
+      window.removeEventListener("touchmove", preventScroll);
     };
 
+    const finish = () => {
+      releaseScroll();
+      setShouldRender(false);
+    };
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const path = strokePathRef.current;
+
     if (reduceMotion || !path) {
-      timers.push(window.setTimeout(finish, 500));
+      markIntroDone();
+      const t = window.setTimeout(finish, REDUCED_MOTION_HOLD);
       return () => {
-        cancelled = true;
-        timers.forEach(window.clearTimeout);
-        document.body.style.overflow = previousOverflow;
-        // Undo the guard too: React StrictMode's dev-only double-invoke
-        // (setup -> cleanup -> setup) must produce a real run on its second
-        // pass, not see its own first pass's flag and bail out instantly.
+        window.clearTimeout(t);
+        releaseScroll();
+        // React StrictMode's dev-only double-invoke (setup -> cleanup ->
+        // setup) must produce a real run on its second pass, not see its
+        // own first pass's flag and bail out instantly.
         sessionStorage.removeItem(SESSION_KEY);
+        resetIntroDone();
       };
     }
 
     const length = path.getTotalLength();
-    const trail = Math.min(60, length * 0.15);
+    const trail = Math.min(TRAIL_MAX, length * TRAIL_RATIO);
     path.style.strokeDasharray = `${trail} ${length - trail}`;
+    path.style.strokeDashoffset = `${length + trail}`;
 
-    // Linear, not the site's shared ease-out: that curve front-loads motion
-    // and settles by ~40% of the duration, which reads as the trail freezing
-    // for the rest of the run. A path sweep needs constant speed instead.
-    const trace = path.animate(
-      [{ strokeDashoffset: length + trail }, { strokeDashoffset: 0 }],
-      { duration: TRACE_DURATION, easing: "linear", fill: "forwards" }
-    );
+    // `gsap.context` scopes every tween/timeline created inside it (including
+    // the ones fired from the `tl.add` callback below, which aren't children
+    // of `tl` itself) so a single `.revert()` on unmount is guaranteed to
+    // kill all of them, mid-flight or not.
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ onComplete: finish });
 
-    trace.onfinish = () => {
-      if (cancelled) return;
-      timers.push(
-        window.setTimeout(() => {
-          if (cancelled) return;
-          setPhase("hold");
-          timers.push(
-            window.setTimeout(() => {
-              if (cancelled) return;
-              setPhase("exit");
-              timers.push(window.setTimeout(finish, EXIT_TOTAL + 60));
-            }, LOGO_EXIT_DURATION)
-          );
-        }, HOLD_DURATION)
-      );
-    };
+      tl.set(markWrapRef.current, { opacity: 0, scale: 0.94 });
+      tl.to(markWrapRef.current, { opacity: 1, scale: 1, duration: SETTLE_DURATION, ease: CALM_EASE });
+
+      // Two calm erase passes: the trail sweeps the path once, drawing
+      // ahead and erasing behind, never holding a filled state.
+      for (let pass = 0; pass < 2; pass++) {
+        tl.fromTo(
+          path,
+          { strokeDashoffset: length + trail },
+          { strokeDashoffset: 0, duration: PASS_DURATION, ease: CALM_EASE }
+        );
+        tl.set(path, { strokeDashoffset: length + trail });
+        tl.to({}, { duration: BREATH_DURATION });
+      }
+
+      // Final pass: a plain draw-in (full dasharray) that's left standing.
+      tl.set(path, { strokeDasharray: `${length} ${length}`, strokeDashoffset: length });
+      tl.to(path, { strokeDashoffset: 0, duration: FINAL_DRAW_DURATION, ease: CALM_EASE });
+
+      tl.to({}, { duration: HOLD_DURATION });
+
+      tl.add(() => {
+        const candidates = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-intro-logo-target]")
+        );
+        const target = candidates.find((el) => el.offsetParent !== null) ?? candidates[0];
+        const wrap = markWrapRef.current;
+        if (!target || !wrap) {
+          markIntroDone();
+          return;
+        }
+
+        // The header slides in from `-translate-y-full` and only reaches
+        // its resting position once `markIntroDone()` (below) flips
+        // `logoLanded` — which hasn't happened yet at this exact instant.
+        // Measuring now would read its still-off-screen position and fly
+        // the mark to the wrong spot, so briefly neutralize the transform,
+        // measure, then put it back — synchronous, so nothing paints
+        // in between.
+        const header = target.closest<HTMLElement>("header");
+        const prevHeaderTransform = header?.style.transform ?? "";
+        const prevHeaderTransition = header?.style.transition ?? "";
+        if (header) {
+          header.style.transition = "none";
+          header.style.transform = "none";
+          void header.offsetHeight;
+        }
+
+        const targetRect = target.getBoundingClientRect();
+        const wrapRect = wrap.getBoundingClientRect();
+
+        if (header) {
+          header.style.transform = prevHeaderTransform;
+          void header.offsetHeight;
+          header.style.transition = prevHeaderTransition;
+        }
+        const scale = targetRect.width / wrapRect.width;
+        const dx = targetRect.left + targetRect.width / 2 - (wrapRect.left + wrapRect.width / 2);
+        const dy = targetRect.top + targetRect.height / 2 - (wrapRect.top + wrapRect.height / 2);
+
+        gsap.to(wrap, {
+          x: dx,
+          y: dy,
+          scale,
+          duration: FLIGHT_DURATION,
+          ease: FLIGHT_EASE,
+          onComplete: markIntroDone,
+        });
+        gsap.to(backdropRef.current, { opacity: 0, duration: FLIGHT_DURATION, ease: FLIGHT_EASE });
+        gsap.to(strokePathRef.current, {
+          opacity: 0,
+          duration: FLIGHT_DURATION * 0.6,
+          ease: FLIGHT_EASE,
+        });
+        gsap.to(fillRef.current, {
+          opacity: 1,
+          duration: FLIGHT_DURATION * 0.6,
+          delay: FLIGHT_DURATION * 0.3,
+          ease: FLIGHT_EASE,
+        });
+      });
+      // Holds `tl` open — and `finish()` (its onComplete) back — until the
+      // flight tweens above have visually landed and sat still long enough
+      // for the header's own crossfade to catch up (see `useIntroDone`).
+      tl.to({}, { duration: FLIGHT_DURATION + HANDOFF_HOLD });
+    });
 
     return () => {
-      cancelled = true;
-      trace.cancel();
-      timers.forEach(window.clearTimeout);
-      document.body.style.overflow = previousOverflow;
-      // See the reduced-motion branch above for why this is undone here too.
+      ctx.revert();
+      releaseScroll();
       sessionStorage.removeItem(SESSION_KEY);
+      resetIntroDone();
     };
-  }, []);
+  }, [shouldRender]);
 
   if (!shouldRender) return null;
 
-  const exiting = phase === "exit";
-  const logoVisible = phase !== "enter" && phase !== "exit";
-
   return (
-    <div role="status" aria-live="polite" className="fixed inset-0 z-[100] flex">
+    <div role="status" aria-live="polite" className="fixed inset-0 z-[100]">
       <span className="sr-only">Loading Fitlat</span>
 
-      {Array.from({ length: COLUMN_COUNT }).map((_, i) => {
-        const fromRight = COLUMN_COUNT - 1 - i;
-        return (
-          <div
-            key={i}
-            aria-hidden="true"
-            className="h-full flex-1 bg-canvas motion-reduce:transition-none"
-            style={{
-              transform: exiting ? "translateY(-100%)" : "translateY(0%)",
-              transition: `transform ${EXIT_COLUMN_DURATION}ms ${EASE} ${exiting ? fromRight * EXIT_STEP : 0}ms`,
-            }}
-          />
-        );
-      })}
+      <div ref={backdropRef} aria-hidden="true" className="absolute inset-0 bg-canvas motion-reduce:hidden" />
+      <div aria-hidden="true" className="hidden motion-reduce:block absolute inset-0 bg-canvas" />
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 flex items-center justify-center"
-        style={{
-          opacity: logoVisible ? 1 : 0,
-          transform: logoVisible ? "scale(1)" : exiting ? "scale(1.06)" : "scale(0.92)",
-          transition: exiting
-            ? `opacity ${LOGO_EXIT_DURATION}ms ${EASE}, transform ${LOGO_EXIT_DURATION}ms ${EASE}`
-            : `opacity ${LOGO_ENTER_DURATION}ms ${EASE}, transform ${LOGO_ENTER_DURATION}ms ${EASE}`,
-        }}
-      >
-        <svg
-          width="96"
-          height="96"
-          viewBox="0 0 150 150"
-          fill="none"
-          className="motion-reduce:hidden"
+      <div className="relative flex size-full items-center justify-center">
+        <div
+          ref={markWrapRef}
+          aria-hidden="true"
+          className="pointer-events-none relative size-24 motion-reduce:hidden"
         >
-          <path
-            ref={pathRef}
-            d={LOGO_PATH}
-            stroke="var(--primary)"
-            strokeWidth={4}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+          <svg viewBox="0 0 150 150" className="absolute inset-0 size-full" fill="none">
+            <path
+              ref={strokePathRef}
+              d={LOGO_PATH}
+              stroke="var(--primary)"
+              strokeWidth={4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <svg
+            ref={fillRef}
+            viewBox="0 0 150 150"
+            className="absolute inset-0 size-full opacity-0"
+            fill="var(--primary)"
+          >
+            <path d={LOGO_PATH} />
+          </svg>
+        </div>
+
         <svg
-          width="96"
-          height="96"
           viewBox="0 0 150 150"
+          aria-hidden="true"
+          className="hidden size-24 motion-reduce:block"
           fill="var(--primary)"
-          className="hidden motion-reduce:block"
         >
           <path d={LOGO_PATH} />
         </svg>

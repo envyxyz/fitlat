@@ -22,6 +22,11 @@ existing token names** (`text-h1`, `text-body`, etc.) — treat
 `tailwind.config.js` + `src/styles/typography.css` as the typography system,
 full stop. Do not introduce a second, parallel type-token vocabulary.
 
+`display` (`text-display`, `clamp(3rem, …, 7rem)`, `lh 0.95`, `-0.05em`) was
+added above `h1` for the hero headline — CLAUDE.md calls for "oversized
+grotesk display type" and `h1` tops out at 80px, which reads as a normal
+heading rather than a hero statement at 1440px+.
+
 ## Token catalog
 
 All tokens live in [`src/styles/tokens.css`](../../src/styles/tokens.css),
@@ -57,8 +62,8 @@ earned" and "restrained, physical" direction.
 | Token | Value | Use |
 |---|---|---|
 | `--radius-scale-xs` (`rounded-xs`) | 2px | Form fields, inline badges |
-| `--radius-scale-sm` (`rounded-sm`) | 4px | Buttons, utility chips |
-| `--radius-scale-md` (`rounded-md`) | 6px | Coach cards, smaller tiles |
+| `--radius-scale-sm` (`rounded-sm`) | 4px | Utility chips |
+| `--radius-scale-md` (`rounded-md`) | 6px | Buttons, coach cards, smaller tiles |
 | `--radius-scale-lg` (`rounded-lg`) | 8px | Feature/pricing/testimonial cards |
 | `--radius-scale-xl` (`rounded-xl`) | 12px | Large containers, modals, the base `Card` primitive |
 | `--radius-scale-full` (`rounded-full`) | 9999px | `BadgePill` only — the one place a full curve appears |
@@ -72,17 +77,38 @@ hard rule, not a starting point.
 |---|---|---|
 | `--motion-ease` (`ease-fitlat`) | `cubic-bezier(0.22, 1, 0.36, 1)` | Every animation on the site |
 | `--duration-fast` | 200ms | Micro-interactions |
-| `--duration-slow` | 600ms | The hero reveal, the proof-strip shimmer |
+| `--duration-slow` | 850ms | The post-intro page reveal, the hero image resolve, the proof-strip shimmer |
+
+**Documented exception — the "shock" animation.** `--motion-ease-shock`
+(`cubic-bezier(0.804, 0.005, 0.55, 0.666)`) and `--duration-shock` (350ms)
+are a second, deliberate curve/duration pair, reserved for the mobile full-
+screen menu (`MobileMenu`, `MenuToggle`): the burger-to-cross morph, the
+panel's slide-up, and its staggered text reveal. It's an abrupt hang-then-
+slam ease-in, distinct on purpose from the site's smooth ease-out — never
+apply it elsewhere without calling it out as "the shock animation" the way
+this exception is.
+
+**Documented exception — the intro's own timeline.** `Loader` runs a single
+~5s GSAP timeline (settle, two erase passes, a final draw that persists, a
+hold, then the flight into the header) built from its own local constants,
+not `--duration-fast`/`--duration-slow` — a one-shot, once-per-session
+sequence is a different animation category than a repeatable
+transition/micro-interaction, the thing the two-duration rule is scoped to.
+The flight itself still eases on `--motion-ease` exactly (registered as a
+GSAP `CustomEase` from the same cubic-bezier), so the handoff into the
+header lands on the site's one curve.
 
 `@media (prefers-reduced-motion: reduce)` is wired globally in
 `tokens.css` — it collapses all animation/transition durations to near-zero.
 Component-level `motion-safe:` variants (see `MetallicDivider`) are still the
 right call for anything with an infinite or attention-grabbing loop.
 
-**The one signature animated moment** is the hero's motion-blurred imagery
-resolving into focus on load. Nothing else on the site should compete with it
-for attention — `MetallicDivider`'s shimmer is deliberately quieter, gated
-behind `motion-safe:`, and runs once.
+**The one signature animated moment is the intro `Loader`**: the mark tracing
+itself, then landing in the header. Nothing else on the site should compete
+with it for attention — the hero's blur-to-sharp image resolve and the page's
+post-intro `Reveal` stagger are the same gesture finishing, not a second
+signature moment; `MetallicDivider`'s shimmer is deliberately quieter still,
+gated behind `motion-safe:`, and runs once.
 
 ### Spacing
 
@@ -98,6 +124,35 @@ Two coexisting scales, both real, used for different things:
 If you're spacing *around type*, reach for `space-*`. If you're spacing a
 *layout* (grid gaps, section padding), reach for the 8px scale.
 
+**Hazard — the `spacing-{sm,md,lg,xl}` names collide with Tailwind's own
+built-in scale.** In Tailwind v4, `--spacing-<key>` is the *single* namespace
+every spacing-driven utility reads from — not just `p-*`/`gap-*`, but also
+`w-*`, `h-*`, `size-*`, `max-w-*`, `min-w-*`. Because `globals.css`'s
+`@theme inline` block defines `--spacing-sm`/`-md`/`-lg`/`-xl` (12px/16px/
+24px/32px, aliasing `tokens.css`'s `--space-sm`, etc. — the 8px layout
+scale), **bare Tailwind size utilities using those same key names are
+silently redefined project-wide**: `max-w-sm` no longer means Tailwind's
+usual 24rem, it means 12px. This is a real bug this audit found and fixed —
+a hero card used `max-w-sm` expecting ~384px and collapsed to a few pixels
+wide. `xxs`/`xxl` are safe (no Tailwind default uses those names); `sm`/
+`md`/`lg`/`xl` are not.
+
+**Rule:** never use a bare `w-`, `h-`, `size-`, `max-w-`, or `min-w-` utility
+with a `sm`/`md`/`lg`/`xl` suffix — you will get the 8px spacing token, not
+Tailwind's conventional size. Use an arbitrary value instead
+(`max-w-[24rem]`), or `max-w-measure`/`max-w-measure-display` for
+type-measure widths. `gap-*`/`p-*`/`m-*` with those same suffixes are fine
+and intentional — that collision is the whole point of the token (`gap-lg`
+*should* mean 24px here).
+### Layout grid
+
+The canonical page container and 12-column rule are documented in
+[CLAUDE.md](../../CLAUDE.md#layout-grid--12-column-alignment-hard-rule) —
+every full-width section wraps its content in
+`mx-auto max-w-[1440px] px-space-body-lg lg:px-xxl` so edges align site-wide.
+That's the enforcement rule; this doc is just the token source it's built
+from (`--space-body-lg` / `--spacing-xxl` above).
+
 ## Primitives catalog
 
 ### shadcn-generated (`src/components/ui/`)
@@ -106,10 +161,12 @@ If you're spacing *around type*, reach for `space-*`. If you're spacing a
 `CardFooter`/`CardAction`), `Badge`, `Separator` — installed via
 `npx shadcn add <name>`, then hand-adjusted for Fitlat's shape language
 (shadcn's `base-maia` preset defaults to pill buttons/badges/rounder cards;
-`Button` and `Card` were tightened to `rounded-sm`/`rounded-xl`, `Badge` kept
-at `rounded-full` since that matches the spec). **Do not hand-edit these
-components' variant classes for one-off needs** — add a variant, or compose
-a Fitlat-specific wrapper (see below) instead.
+`Card` was tightened to `rounded-xl`, `Button` sits at `rounded-md` (one step
+softer than its original `rounded-sm`, plus a touch more horizontal padding
+per size step — a deliberate minor theme adjustment, not a scale change),
+`Badge` kept at `rounded-full` since that matches the spec). **Do not
+hand-edit these components' variant classes for one-off needs** — add a
+variant, or compose a Fitlat-specific wrapper (see below) instead.
 
 To add more (`Tooltip`, `Accordion`, etc.): `npx shadcn add <component>`,
 then check its default radius/color classes against the Shape table above
@@ -126,7 +183,20 @@ Compose shadcn primitives + tokens into Fitlat's actual section vocabulary
 - **`StatTile`** — proof-strip stat (`{value, label}`), number in `--primary`.
 - **`MetallicDivider`** — the proof-strip divider between Hero and Proof
   Strip. Deliberately subordinate motion (see Motion table above).
-- **`FeatureCard`** — gallery/facility card.
+- **`GalleryCell`** — one cell of the Gallery section's archive grid
+  (`{variant: "heading"|"image"|"label"|"quote"|"cta", ...}`). Flat cells
+  (`heading`/`label`/`quote`) carry a permanent, static `blur(40px)`/12%-
+  opacity crop of their own `revealSrc` photo as ground — material that
+  reads as one wall with the `image` cells instead of a void beside them.
+  `image` captions are visible at rest on a bottom scrim; hover/focus only
+  deepens the scrim and draws in a 2px `--primary` rule. `cta` is the
+  grid's one structural use of `--primary`. No cell is a focusable
+  no-op — see CONTENT.md's Gallery entry before adding a sixth variant.
+  Supersedes `FeatureCard`.
+- **`GalleryGrid`** — the archive grid's container: owns only the one-shot
+  GSAP `ScrollTrigger.batch` entrance (clip-path wipe + rise, DOM-order
+  stagger), deliberately quieter than the hero's signature reveal. Column
+  count/gutters are the caller's `className`.
 - **`CoachCard`** — compact coach profile (`{photo, name, role, bio}`) —
   stays minimal on purpose, don't add fields without a second real need.
 - **`TestimonialCard`** — member testimonial (`{quote, name, detail}`).
@@ -136,10 +206,32 @@ Compose shadcn primitives + tokens into Fitlat's actual section vocabulary
   Professional Athlete tier's only visual distinction.
 - **`BadgePill`** — eyebrow/kicker label, wraps `Badge` with the caps/
   tracking treatment from `typography.css`'s `.text-caps`.
+- **`Reveal`** — `{children, from: "left"|"right"|"none", index, revealed}`.
+  The hero/header entrance primitive: fade + 15px translate on the site's
+  shared ease/duration, direction set by which side of center the content
+  sits on, staggered via `index * 60ms`. Driven by `useIntroReveal`, never
+  wired up ad hoc per component.
+- **`SiteHeader`** — fixed header, section-reactive background via
+  `useNavSurface` (`data-nav-surface="transparent"|"canvas"|"canvas-soft"`
+  declared per section). ≥768px: wordmark + centered nav + CTA. <768px:
+  burger (`MobileMenu`) + a direct "Join Fitlat" plus icon — no wordmark.
+- **`MobileMenu`** / **`MenuToggle`** — the full-screen mobile nav (Base UI
+  `Dialog`) and its burger-to-cross icon. Both run on the "shock" animation
+  (see Motion above), not the site default.
+- **`Hero`** — CLAUDE.md section #2. Owns the signature reveal (image
+  blur-resolve + staggered `Reveal` copy) plus the vignette stack.
+- **`GallerySection`** — CLAUDE.md section #4. A uniform 4-column archive
+  grid (`GalleryGrid` of `GalleryCell`s) — the goldsgym.com "60 years"
+  pattern. No separate contained header above the grid; the first cell
+  (`variant="heading"`) doubles as the section heading, matching the
+  reference layout. `id="facilities"` is the nav anchor target
+  (`src/lib/nav.ts`); `scroll-mt-16` keeps it clear of the fixed header on
+  an in-page jump.
 
-`src/app/page.tsx` currently renders all of these together as a design-system
-showcase (not a real page) — replace it with the actual CLAUDE.md section
-order once CONTENT.md's copy is filled in.
+`src/app/page.tsx` now composes `SiteHeader` + `Hero` + `GallerySection` as
+the real page per CLAUDE.md's section order. The former all-primitives
+showcase moved to `src/app/kitchen-sink/page.tsx` — still useful for
+eyeballing the token layer, no longer mistakeable for the real homepage.
 
 ## Font
 
