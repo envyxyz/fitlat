@@ -172,50 +172,46 @@ export function ImageViewer({
         </svg>
       </button>
 
-      {/* Left Navigation Arrow */}
+      {/* Left Navigation Arrow — clean, minimal 'just arrow' chevron */}
       {images.length > 1 && (
         <button
           type="button"
           onClick={handlePrev}
           aria-label="Previous image"
-          className="absolute left-4 sm:left-8 top-1/2 z-50 -translate-y-1/2 flex size-14 items-center justify-center rounded-full text-white/70 transition-all hover:text-white hover:bg-white/10 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+          className="absolute left-2 sm:left-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-all hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2.2"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="size-9"
+            className="size-6 sm:size-8"
           >
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
       )}
 
-      {/* Right Navigation Arrow */}
+      {/* Right Navigation Arrow — clean, minimal 'just arrow' chevron */}
       {images.length > 1 && (
         <button
           type="button"
           onClick={handleNext}
           aria-label="Next image"
-          className="absolute right-4 sm:right-8 top-1/2 z-50 -translate-y-1/2 flex size-14 items-center justify-center rounded-full text-white/70 transition-all hover:text-white hover:bg-white/10 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+          className="absolute right-2 sm:right-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-all hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2.2"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="size-9"
+            className="size-6 sm:size-8"
           >
             <polyline points="9 18 15 12 9 6" />
           </svg>

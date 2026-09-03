@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GalleryGrid } from "./gallery-grid";
 import { GalleryCell, type GalleryCellData } from "./gallery-cell";
 import { ImageViewer, type ViewerImage } from "./image-viewer";
@@ -171,10 +171,42 @@ const CELLS: (GalleryCellData & { viewerIndex: number })[] = [
 export function GallerySection() {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeCellId, setActiveCellId] = useState<string | null>(null);
 
-  const handleCellClick = (index: number) => {
-    setActiveImageIndex(index);
-    setViewerOpen(true);
+  // Reset active card engagement when clicking outside the gallery tiles
+  useEffect(() => {
+    if (!activeCellId) return;
+
+    const handlePointerDownOutside = (e: PointerEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target?.closest("[data-gallery-tile]")) {
+        setActiveCellId(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDownOutside);
+    return () => document.removeEventListener("pointerdown", handlePointerDownOutside);
+  }, [activeCellId]);
+
+  const handleCellClick = (id: string, viewerIndex: number) => {
+    const isTouch =
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
+    if (isTouch) {
+      if (activeCellId === id) {
+        // Second tap on the already engaged card: open fullscreen lightbox!
+        setActiveImageIndex(viewerIndex);
+        setViewerOpen(true);
+      } else {
+        // First tap: engage hover state and show orange arrow / reveal photo
+        setActiveCellId(id);
+      }
+    } else {
+      // Desktop with mouse: open directly on click (hover is already shown by cursor)
+      setActiveImageIndex(viewerIndex);
+      setViewerOpen(true);
+    }
   };
 
   return (
@@ -191,7 +223,8 @@ export function GallerySection() {
             <GalleryCell
               key={cell.id}
               {...cell}
-              onClick={() => handleCellClick(cell.viewerIndex)}
+              isActive={activeCellId === cell.id}
+              onClick={() => handleCellClick(cell.id, cell.viewerIndex)}
             />
           ))}
         </GalleryGrid>

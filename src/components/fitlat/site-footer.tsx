@@ -17,45 +17,45 @@ export function SiteFooter() {
       id="visit"
       data-nav-surface="canvas-soft"
       aria-label="Site footer"
-      className="relative w-full h-[100dvh] md:h-[55vh] md:min-h-[440px] overflow-hidden"
+      className="relative w-full h-[100svh] min-h-[100svh] md:h-[55vh] md:min-h-[440px] overflow-hidden"
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
-      <div className="fixed bottom-0 left-0 w-full h-[100dvh] md:h-[55vh] md:min-h-[440px] bg-canvas text-ink-secondary flex flex-col justify-between overflow-hidden">
+      <div className="fixed bottom-0 left-0 w-full h-[100svh] min-h-[100svh] md:h-[55vh] md:min-h-[440px] bg-canvas text-ink-secondary flex flex-col justify-between overflow-hidden">
         {/* Seamless Ultra-Subtle Granite Texture Overlay */}
         <div
           className="absolute inset-0 bg-[url('/images/textures/granite-seamless.jpg')] bg-repeat bg-[size:500px_500px] opacity-[0.07] mix-blend-screen pointer-events-none"
           aria-hidden="true"
         />
 
-        {/* Inner Content Container */}
-        <div className="relative z-10 flex flex-col justify-between h-full max-w-[1440px] mx-auto w-full px-space-body-lg md:px-lg lg:px-xxl pt-[92px] sm:pt-[96px] md:pt-10 pb-space-sm md:pb-2">
+        {/* Inner Content Container — incorporates safe-area-inset-bottom for mobile browser toolbars */}
+        <div className="relative z-10 flex flex-col justify-between h-full max-w-[1440px] mx-auto w-full px-space-body-lg md:px-lg lg:px-xxl pt-[76px] sm:pt-[92px] md:pt-10 pb-[max(1rem,env(safe-area-inset-bottom,1rem))] md:pb-2">
           {/* Top Section: Fitlat Logo + Tagline (Left) & Navigation (Right) — parallel & equal in height */}
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-y-space-h2 w-full">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-y-4 sm:gap-y-space-h2 w-full">
             {/* Left: Fitlat Brand LogoMark & Headline */}
             <div className="flex flex-col items-start text-left">
               {/* Fitlat Logo */}
               <div
-                className="size-9 md:size-7 flex items-center justify-start text-primary"
+                className="size-8 sm:size-9 md:size-7 flex items-center justify-start text-primary"
                 aria-hidden="true"
               >
                 <LogoMark className="size-full" />
               </div>
 
-              {/* Tagline tailored to Fitlat (decreased slightly to match link block height) */}
-              <h2 className="mt-2.5 text-h4 md:text-[21px] lg:text-[22px] font-medium tracking-tight text-ink leading-[1.32] [text-wrap:unset] max-w-none text-left">
+              {/* Tagline tailored to Fitlat */}
+              <h2 className="mt-2 text-xl sm:text-h4 md:text-[21px] lg:text-[22px] font-medium tracking-tight text-ink leading-[1.3] [text-wrap:unset] max-w-none text-left">
                 <span className="block whitespace-nowrap">Fitlat is the standard</span>
                 <span className="block whitespace-nowrap">you’ve been training for.</span>
               </h2>
             </div>
 
-            {/* Right: Navigation Grid (increased link size & gap to balance height with left text) */}
-            <div className="flex flex-col gap-y-space-h2 sm:grid sm:grid-cols-3 sm:gap-space-h1 lg:gap-space-h2">
+            {/* Right: Navigation Grid — 3 side-by-side columns on mobile to conserve vertical space */}
+            <div className="grid grid-cols-3 gap-x-3 gap-y-2 sm:gap-space-h1 lg:gap-space-h2">
               {/* Column 1: USEFUL */}
-              <div className="flex flex-col gap-3">
-                <span className="text-caption text-caps text-ink-muted font-semibold tracking-wider">
+              <div className="flex flex-col gap-1.5 sm:gap-3">
+                <span className="text-[11px] sm:text-caption text-caps text-ink-muted font-semibold tracking-wider">
                   USEFUL
                 </span>
-                <ul className="flex flex-col space-y-2.5 text-body-lg text-ink-secondary">
+                <ul className="flex flex-col space-y-1.5 sm:space-y-2.5 text-sm sm:text-body-lg text-ink-secondary">
                   <li>
                     <a
                       href="#about"
@@ -76,11 +76,11 @@ export function SiteFooter() {
               </div>
 
               {/* Column 2: LEGAL */}
-              <div className="flex flex-col gap-3">
-                <span className="text-caption text-caps text-ink-muted font-semibold tracking-wider">
+              <div className="flex flex-col gap-1.5 sm:gap-3">
+                <span className="text-[11px] sm:text-caption text-caps text-ink-muted font-semibold tracking-wider">
                   LEGAL
                 </span>
-                <ul className="flex flex-col space-y-2.5 text-body-lg text-ink-secondary">
+                <ul className="flex flex-col space-y-1.5 sm:space-y-2.5 text-sm sm:text-body-lg text-ink-secondary">
                   <li>
                     <a
                       href="#"
@@ -101,11 +101,11 @@ export function SiteFooter() {
               </div>
 
               {/* Column 3: UPDATES */}
-              <div className="flex flex-col gap-3">
-                <span className="text-caption text-caps text-ink-muted font-semibold tracking-wider">
+              <div className="flex flex-col gap-1.5 sm:gap-3">
+                <span className="text-[11px] sm:text-caption text-caps text-ink-muted font-semibold tracking-wider">
                   UPDATES
                 </span>
-                <ul className="flex flex-col space-y-2.5 text-body-lg text-ink-secondary">
+                <ul className="flex flex-col space-y-1.5 sm:space-y-2.5 text-sm sm:text-body-lg text-ink-secondary">
                   <li>
                     <a
                       href="https://twitter.com"
@@ -132,20 +132,20 @@ export function SiteFooter() {
           </div>
 
           {/* Bottom Section - Mobile (<md): Full-Width 2-Line FIT / LAT © Wordmark */}
-          <div className="md:hidden w-full mt-auto select-none overflow-hidden pb-space-xs" aria-hidden="true">
+          <div className="md:hidden w-full mt-auto select-none overflow-hidden pb-1" aria-hidden="true">
             <svg
-              viewBox="0 0 360 250"
+              viewBox="0 0 360 230"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-auto text-ink-secondary overflow-visible"
+              className="w-full h-auto max-h-[26svh] text-ink-secondary overflow-visible"
               preserveAspectRatio="xMidYMid meet"
             >
               {/* FIT line */}
               <text
                 x="0"
-                y="110"
+                y="100"
                 fontFamily="var(--font-sans), Inter, system-ui, -apple-system, sans-serif"
-                fontSize="135"
+                fontSize="125"
                 fontWeight="800"
                 letterSpacing="-0.04em"
                 fill="currentColor"
@@ -156,9 +156,9 @@ export function SiteFooter() {
               {/* LAT line */}
               <text
                 x="0"
-                y="235"
+                y="215"
                 fontFamily="var(--font-sans), Inter, system-ui, -apple-system, sans-serif"
-                fontSize="135"
+                fontSize="125"
                 fontWeight="800"
                 letterSpacing="-0.04em"
                 fill="currentColor"
@@ -167,22 +167,22 @@ export function SiteFooter() {
               </text>
 
               {/* Copyright Symbol — centered C inside circle, aligned to top of T */}
-              <g transform="translate(270, 140)">
+              <g transform="translate(255, 125)">
                 <circle
-                  cx="14"
-                  cy="14"
-                  r="12"
+                  cx="13"
+                  cy="13"
+                  r="11"
                   stroke="currentColor"
-                  strokeWidth="2.5"
+                  strokeWidth="2.2"
                   fill="none"
                 />
                 <text
-                  x="14"
-                  y="14"
+                  x="13"
+                  y="13"
                   textAnchor="middle"
                   dominantBaseline="central"
                   fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
-                  fontSize="13"
+                  fontSize="12"
                   fontWeight="700"
                   fill="currentColor"
                 >

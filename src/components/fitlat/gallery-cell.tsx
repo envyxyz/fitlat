@@ -30,6 +30,7 @@ export interface GalleryCellData {
 interface GalleryCellProps extends GalleryCellData {
   onClick?: () => void;
   className?: string;
+  isActive?: boolean;
 }
 
 export function GalleryCell({
@@ -45,6 +46,7 @@ export function GalleryCell({
   caption,
   onClick,
   className,
+  isActive = false,
 }: GalleryCellProps) {
   // Common container styling: square aspect ratio, overflow hidden, cursor pointer, smooth transitions
   const baseClasses = cn(
@@ -53,6 +55,7 @@ export function GalleryCell({
     "cursor-pointer select-none",
     "border border-white/10 hover:border-primary/40",
     "hover:shadow-2xl hover:shadow-primary/5",
+    isActive && "border-primary/40 shadow-2xl shadow-primary/5",
     className
   );
 
@@ -79,13 +82,13 @@ export function GalleryCell({
 
         {/* Optional hover reveal background photo with soft, low-opacity orange tint */}
         {revealSrc && (
-          <div className="absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100">
+          <div className={cn("absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100", isActive && "opacity-100")}>
             <Image
               src={revealSrc}
               alt={alt}
               fill
               sizes="(min-width: 1024px) 25vw, 50vw"
-              className="object-cover brightness-70 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
+              className={cn("object-cover brightness-70 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out", isActive && "scale-105")}
             />
             {/* Low-opacity orange overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-primary/20 to-black/60 mix-blend-multiply" />
@@ -102,7 +105,7 @@ export function GalleryCell({
 
         {/* Diagonal expand arrow on hover */}
         {revealSrc && (
-          <div className="relative z-10 self-end opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1">
+          <div className={cn("relative z-10 self-end opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1", isActive && "opacity-100 translate-x-0")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -139,12 +142,12 @@ export function GalleryCell({
           alt={alt}
           fill
           sizes="(min-width: 1024px) 25vw, 50vw"
-          className="object-cover brightness-95 contrast-105 transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-100"
+          className={cn("object-cover brightness-95 contrast-105 transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-100", isActive && "scale-105 brightness-100")}
         />
 
         {/* Subtle dark vignette and low-opacity warm orange ambient sweep on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-70 transition-opacity duration-300 group-hover:opacity-40" />
-        <div className="absolute inset-0 bg-primary/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100 mix-blend-screen" />
+        <div className={cn("absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-70 transition-opacity duration-300 group-hover:opacity-40", isActive && "opacity-40")} />
+        <div className={cn("absolute inset-0 bg-primary/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100 mix-blend-screen", isActive && "opacity-100")} />
 
         {/* Caption text */}
         {caption && (
@@ -156,7 +159,7 @@ export function GalleryCell({
         )}
 
         {/* Diagonal expand arrow icon on hover */}
-        <div className="absolute bottom-3 right-3 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/90 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 scale-75 border border-white/10">
+        <div className={cn("absolute bottom-3 right-3 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/90 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 scale-75 border border-white/10", isActive && "opacity-100 scale-100")}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"
@@ -200,13 +203,13 @@ export function GalleryCell({
 
         {/* Hover photo reveal with low-opacity orange/sepia filter */}
         {revealSrc && (
-          <div className="absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100">
+          <div className={cn("absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100", isActive && "opacity-100")}>
             <Image
               src={revealSrc}
               alt={alt}
               fill
               sizes="(min-width: 1024px) 25vw, 50vw"
-              className="object-cover brightness-75 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
+              className={cn("object-cover brightness-75 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out", isActive && "scale-105")}
             />
             {/* Low opacity orange gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/60" />
@@ -226,7 +229,7 @@ export function GalleryCell({
         {/* Vertical Rotated Stat on right */}
         <div className="relative z-10 flex h-full w-full justify-end items-center">
           <span
-            className="font-condensed text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink transition-colors duration-300 group-hover:text-primary"
+            className={cn("font-condensed text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink transition-colors duration-300 group-hover:text-primary", isActive && "text-primary")}
             style={{ writingMode: "vertical-rl" }}
           >
             {year}
@@ -235,7 +238,7 @@ export function GalleryCell({
 
         {/* Diagonal expand arrow on hover */}
         {revealSrc && (
-          <div className="absolute bottom-4 left-4 z-10 opacity-0 transition-all duration-300 group-hover:opacity-100">
+          <div className={cn("absolute bottom-4 left-4 z-10 opacity-0 transition-all duration-300 group-hover:opacity-100", isActive && "opacity-100")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
@@ -280,13 +283,13 @@ export function GalleryCell({
 
         {/* Hover photo reveal with low-opacity orange/sepia filter */}
         {revealSrc && (
-          <div className="absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100">
+          <div className={cn("absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100", isActive && "opacity-100")}>
             <Image
               src={revealSrc}
               alt={alt}
               fill
               sizes="(min-width: 1024px) 25vw, 50vw"
-              className="object-cover brightness-70 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
+              className={cn("object-cover brightness-70 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out", isActive && "scale-105")}
             />
             {/* Low opacity orange gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60" />
@@ -303,13 +306,13 @@ export function GalleryCell({
 
         {/* Author / Bottom content */}
         <div className="relative z-10 flex items-end justify-between">
-          <span className="font-condensed text-sm sm:text-base font-bold tracking-wider uppercase text-white/80 transition-colors duration-300 group-hover:text-primary">
+          <span className={cn("font-condensed text-sm sm:text-base font-bold tracking-wider uppercase text-white/80 transition-colors duration-300 group-hover:text-primary", isActive && "text-primary")}>
             {author}
           </span>
 
           {/* Diagonal expand arrow on hover */}
           {revealSrc && (
-            <div className="opacity-0 transition-all duration-300 group-hover:opacity-100">
+            <div className={cn("opacity-0 transition-all duration-300 group-hover:opacity-100", isActive && "opacity-100")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
@@ -354,13 +357,13 @@ export function GalleryCell({
 
       {/* Hover photo reveal with low-opacity orange/sepia filter */}
       {revealSrc && (
-        <div className="absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100">
+        <div className={cn("absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100", isActive && "opacity-100")}>
           <Image
             src={revealSrc}
             alt={alt}
             fill
             sizes="(min-width: 1024px) 25vw, 50vw"
-            className="object-cover brightness-70 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
+            className={cn("object-cover brightness-70 contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out", isActive && "scale-105")}
           />
           {/* Low opacity orange gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/60" />
@@ -371,7 +374,7 @@ export function GalleryCell({
       {/* Top Content: Stat / Year or Story */}
       <div className="relative z-10">
         {year && (
-          <span className="font-condensed text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-none transition-colors duration-300 group-hover:text-primary">
+          <span className={cn("font-condensed text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-none transition-colors duration-300 group-hover:text-primary", isActive && "text-primary")}>
             {year}
           </span>
         )}
@@ -394,7 +397,7 @@ export function GalleryCell({
 
         {/* Diagonal expand arrow on hover */}
         {revealSrc && (
-          <div className="ml-auto opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105">
+          <div className={cn("ml-auto opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105", isActive && "opacity-100 scale-105")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
