@@ -156,8 +156,7 @@ FitLat/
 │   ├── app/
 │   │   ├── globals.css            # Tailwind v4 @theme, tokens, and CSS reset
 │   │   ├── layout.tsx             # Root layout with Inter font and intro loader
-│   │   ├── page.tsx               # Production homepage assembly
-│   │   └── kitchen-sink/          # Dedicated design system component showcase
+│   │   └── page.tsx               # Production homepage assembly
 │   ├── components/
 │   │   ├── fitlat/                # Domain-specific FitLat components
 │   │   │   ├── coaches-section.tsx
@@ -236,8 +235,6 @@ Start the development server with Turbopack:
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-To inspect the isolated component testbed, visit [http://localhost:3000/kitchen-sink](http://localhost:3000/kitchen-sink).
 
 ### Production Build
 

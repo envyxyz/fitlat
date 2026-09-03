@@ -43,11 +43,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - React 19 `useSyncExternalStore` integration for rock-solid cross-component animation state synchronization without cascading renders.
 
 ### Changed
-- Refactored `src/app/page.tsx` from internal design-system showcase to full marketing experience (kitchen sink relocated to `/kitchen-sink`).
+- Refactored `src/app/page.tsx` from internal design-system showcase to full marketing experience.
 - Updated slow duration token (`--duration-slow`) to 850ms and reveal stagger to 90ms for calibrated, deliberate motion.
 - Modernized `PricingCard` and `TestimonialCard` styling to adhere strictly to AST design system rules.
 
 ### Removed
+- Removed temporary internal design-system showcase (`src/app/kitchen-sink/` and `TypographyExample.tsx`).
 - Deprecated legacy `FeatureCard` in favor of modular `GalleryCell`.
 - Removed raw CSS rgba declarations in favor of core design system tokens.
 
