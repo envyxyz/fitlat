@@ -1,26 +1,8 @@
 import Image from "next/image";
 import { CoachCard } from "./coach-card";
+import { content } from "@/content";
 
-const COACHES = [
-  {
-    name: "Marcus Whitfield",
-    role: "Strength & Conditioning",
-    bio: "Ten years coaching collegiate lifters before he brought the same programming to Fitlat's floor.",
-    image: "/images/coaches/marcus-whitfield.jpg",
-  },
-  {
-    name: "Renata Cole",
-    role: "Mobility & Recovery",
-    bio: "Started as a physical therapist; got tired of only seeing people after something already went wrong.",
-    image: "/images/coaches/renata-cole.jpg",
-  },
-  {
-    name: "Devon Ashworth",
-    role: "Performance Training",
-    bio: "Former semi-pro sprinter who builds Fitlat's athlete-tier programming block by block.",
-    image: "/images/coaches/devon-ashworth.jpg",
-  },
-];
+const COACHES = content.coaches.members;
 
 /**
  * Coaches Section — CLAUDE.md section order #5.
@@ -39,9 +21,9 @@ export function CoachesSection() {
         {/* Section Header */}
         <div className="mb-space-h1 max-w-2xl">
           <span className="text-caption text-caps text-primary block mb-space-caption">
-            Expert Pedigree
+            {content.coaches.eyebrow}
           </span>
-          <h2 className="text-h2 text-ink">Coached, not just supervised</h2>
+          <h2 className="text-h2 text-ink">{content.coaches.heading}</h2>
         </div>
 
         {/* Coaches Grid */}
@@ -52,7 +34,7 @@ export function CoachesSection() {
               name={coach.name}
               role={coach.role}
               bio={coach.bio}
-              className="border border-hairline transition-all duration-[var(--duration-fast)] ease-[var(--motion-ease)] hover:border-primary/40 group overflow-hidden"
+              className="border border-hairline transition-[border-color] duration-[var(--duration-fast)] ease-[var(--motion-ease)] hover:border-primary/40 group overflow-hidden"
               photo={
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-canvas-soft mb-space-small">
                   <Image

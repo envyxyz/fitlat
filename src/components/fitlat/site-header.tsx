@@ -1,19 +1,17 @@
 "use client";
 
-import { useRef } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { PlusSignIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "./reveal";
 import { LogoMark } from "./logo-mark";
 import { MobileMenu } from "./mobile-menu";
-import { NAV_ITEMS } from "@/lib/nav";
+import { content } from "@/content";
 import { useNavSurface } from "@/hooks/use-nav-surface";
 import { useIntroReveal } from "@/hooks/use-intro-reveal";
 import { useIntroDone } from "@/hooks/use-intro-done";
 import { useIntroFlight } from "@/hooks/use-intro-flight";
-import { useScrolled } from "@/hooks/use-scrolled";
-import { useAutoHideHeader } from "@/hooks/use-auto-hide-header";
+import { useHeaderScroll } from "@/hooks/use-header-scroll";
 import { cn } from "@/lib/utils";
 
 const HEADER_HEIGHT = 72;
@@ -49,26 +47,27 @@ const SURFACE_CLASS: Record<string, string> = {
  * is the true resting position regardless of the bar's current slide state.
  *
  * On desktop, once the page scrolls past a small threshold, the inner bar
- * contracts into a floating glass "island" (`useScrolled`) — a CSS-only
- * backdrop-blur treatment, no external lib. On mobile there's no room for
- * that, so instead the bar itself hides on scroll-down and reappears on
- * scroll-up (`useAutoHideHeader`) — desktop is always pinned open.
+ * contracts into a floating glass "island" — a CSS-only backdrop-blur
+ * treatment, no external lib. On mobile there's no room for that, so instead
+ * the bar itself hides on scroll-down and reappears on scroll-up — desktop is
+ * always pinned open. Both signals come from the single rAF-throttled
+ * `useHeaderScroll` (see that hook for why it replaced two listeners).
  */
 export function SiteHeader() {
   const revealed = useIntroReveal();
   const logoLanded = useIntroDone();
   const flightStarted = useIntroFlight();
   const surface = useNavSurface(HEADER_HEIGHT);
-  const scrolled = useScrolled(24);
-  const mobileHidden = useAutoHideHeader();
-  const headerRef = useRef<HTMLElement>(null);
+  const { scrolled, mobileHidden } = useHeaderScroll(24);
 
   return (
     <header
-      ref={headerRef}
       data-surface={surface}
       style={{
         height: HEADER_HEIGHT,
+        contain: "layout",
+        isolation: "isolate",
+        willChange: "translate",
         transition:
           "translate var(--duration-slow) var(--motion-ease), transform var(--duration-slow) var(--motion-ease), background-color var(--duration-fast) var(--motion-ease), border-color var(--duration-fast) var(--motion-ease), backdrop-filter var(--duration-fast) var(--motion-ease)",
       }}
@@ -81,9 +80,9 @@ export function SiteHeader() {
     >
       <div
         className={cn(
-          "mx-auto grid h-full max-w-[1440px] grid-cols-3 items-center px-space-body-lg transition-[max-width,margin,padding,border-radius,background-color,border-color,box-shadow] duration-[var(--duration-slow)] ease-[var(--motion-ease)] md:flex md:justify-between lg:px-xxl",
+          "mx-auto grid h-full max-w-[1440px] grid-cols-3 items-center px-space-body-lg transition-[max-width,translate,padding,border-radius,background-color,border-color,box-shadow] duration-[var(--duration-slow)] ease-[var(--motion-ease)] md:flex md:justify-between lg:px-xxl",
           scrolled &&
-            "md:mt-sm md:h-[64px] md:max-w-3xl md:rounded-full md:border md:border-hairline md:bg-canvas/70 md:px-lg md:shadow-2xl md:backdrop-blur-xl lg:px-lg"
+            "md:translate-y-[12px] md:h-[64px] md:max-w-3xl md:rounded-full md:border md:border-hairline md:bg-canvas/70 md:px-lg md:shadow-2xl md:backdrop-blur-xl lg:px-lg"
         )}
       >
         {/* Mobile: burger — left cell of the 3-col grid. Desktop: the mark
@@ -100,7 +99,7 @@ export function SiteHeader() {
             whichever one is actually laid out at flight time. */}
         <a
           href="#"
-          aria-label="Fitlat home"
+          aria-label={content.header.logoAriaLabel}
           data-intro-logo-target
           className={cn(
             "col-start-2 flex size-11 items-center justify-center justify-self-center transition-opacity duration-[var(--duration-fast)] ease-[var(--motion-ease)] md:hidden",
@@ -112,7 +111,7 @@ export function SiteHeader() {
         </a>
         <a
           href="#"
-          aria-label="Fitlat home"
+          aria-label={content.header.logoAriaLabel}
           data-intro-logo-target
           className={cn(
             "hidden size-11 transition-opacity duration-[var(--duration-fast)] ease-[var(--motion-ease)] md:block",
@@ -124,17 +123,15 @@ export function SiteHeader() {
         </a>
 
         <Reveal revealed={revealed} index={1} className="hidden md:block">
-          <nav aria-label="Primary" className="flex items-center">
-            {NAV_ITEMS.map((item, index) => (
-              <span key={item.href} className="flex items-center">
-                {index > 0 && <span aria-hidden="true" className="mx-lg h-4 w-px bg-hairline" />}
-                <a
-                  href={item.href}
-                  className="text-body-lg text-ink-secondary transition-colors duration-[var(--duration-fast)] ease-[var(--motion-ease)] hover:text-ink"
-                >
-                  {item.label}
-                </a>
-              </span>
+          <nav aria-label="Primary" className="flex items-center gap-lg">
+            {content.header.navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-body text-ink-secondary transition-colors duration-[var(--duration-fast)] ease-[var(--motion-ease)] hover:text-ink"
+              >
+                {item.label}
+              </a>
             ))}
           </nav>
         </Reveal>
@@ -142,14 +139,16 @@ export function SiteHeader() {
         {/* Mobile: plus opens Join Fitlat directly — right cell of the grid.
             Desktop: the full CTA button takes this slot instead. */}
         <a
-          href="#membership"
-          aria-label="Join Fitlat"
+          href={content.header.ctaHref}
+          aria-label={content.header.ctaLabel}
           className="flex size-11 items-center justify-center justify-self-end rounded-sm text-ink outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas md:hidden"
         >
           <HugeiconsIcon icon={PlusSignIcon} size={22} strokeWidth={2} />
         </a>
         <Reveal revealed={revealed} from="right" index={2} className="hidden md:block">
-          <Button size="sm">Join Fitlat</Button>
+          <a href={content.header.ctaHref}>
+            <Button size="sm">{content.header.ctaLabel}</Button>
+          </a>
         </Reveal>
       </div>
     </header>

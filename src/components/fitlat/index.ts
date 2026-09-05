@@ -20,5 +20,4 @@ export { MenuToggle } from "./menu-toggle";
 export { Hero } from "./hero";
 export { TourModal } from "./tour-modal";
 export { ImageViewer } from "./image-viewer";
-export { CustomScrollbar } from "./custom-scrollbar";
 export { SiteFooter } from "./site-footer";

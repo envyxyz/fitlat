@@ -51,7 +51,7 @@ export function GalleryCell({
   // Common container styling: square aspect ratio, overflow hidden, cursor pointer, smooth transitions
   const baseClasses = cn(
     "group relative isolate flex flex-col justify-between overflow-hidden",
-    "aspect-square w-full rounded-[3px] transition-all duration-300",
+    "aspect-square w-full rounded-[3px] transition-[border-color,box-shadow] duration-300",
     "cursor-pointer select-none",
     "border border-white/10 hover:border-primary/40",
     "hover:shadow-2xl hover:shadow-primary/5",
@@ -67,7 +67,7 @@ export function GalleryCell({
         onClick={onClick}
         className={cn(
           baseClasses,
-          "bg-[#0e0e0e] p-6 sm:p-8 justify-between"
+          "bg-[#0e0e0e] p-6 sm:p-8"
         )}
       >
         {/* Subtle stone background */}
@@ -105,7 +105,7 @@ export function GalleryCell({
 
         {/* Diagonal expand arrow on hover */}
         {revealSrc && (
-          <div className={cn("relative z-10 self-end opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1", isActive && "opacity-100 translate-x-0")}>
+          <div className={cn("relative z-10 self-end opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1", isActive && "opacity-100 translate-x-0")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -142,7 +142,7 @@ export function GalleryCell({
           alt={alt}
           fill
           sizes="(min-width: 1024px) 25vw, 50vw"
-          className={cn("object-cover brightness-95 contrast-105 transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-100", isActive && "scale-105 brightness-100")}
+          className={cn("object-cover brightness-95 contrast-105 transition-[transform,filter] duration-700 ease-out group-hover:scale-105 group-hover:brightness-100", isActive && "scale-105 brightness-100")}
         />
 
         {/* Subtle dark vignette and low-opacity warm orange ambient sweep on hover */}
@@ -159,7 +159,7 @@ export function GalleryCell({
         )}
 
         {/* Diagonal expand arrow icon on hover */}
-        <div className={cn("absolute bottom-3 right-3 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/90 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 scale-75 border border-white/10", isActive && "opacity-100 scale-100")}>
+        <div className={cn("absolute bottom-3 right-3 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white/90 opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:scale-100 scale-75 border border-white/10", isActive && "opacity-100 scale-100")}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"
@@ -179,7 +179,7 @@ export function GalleryCell({
     );
   }
 
-  // 3. Stone Tile - Vertical Stat / Year (e.g. "14,000" vertical)
+  // 3. Stone Tile - Vertical Stat / Year (e.g. "11+" vertical)
   if (variant === "stone-vertical") {
     return (
       <div
@@ -238,7 +238,7 @@ export function GalleryCell({
 
         {/* Diagonal expand arrow on hover */}
         {revealSrc && (
-          <div className={cn("absolute bottom-4 left-4 z-10 opacity-0 transition-all duration-300 group-hover:opacity-100", isActive && "opacity-100")}>
+          <div className={cn("absolute bottom-4 left-4 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100", isActive && "opacity-100")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
@@ -267,7 +267,7 @@ export function GalleryCell({
         onClick={onClick}
         className={cn(
           baseClasses,
-          "bg-[#141414] p-6 sm:p-7 justify-between"
+          "bg-[#141414] p-6 sm:p-7"
         )}
       >
         {/* Dark Granite / Stone Texture */}
@@ -312,7 +312,7 @@ export function GalleryCell({
 
           {/* Diagonal expand arrow on hover */}
           {revealSrc && (
-            <div className={cn("opacity-0 transition-all duration-300 group-hover:opacity-100", isActive && "opacity-100")}>
+            <div className={cn("opacity-0 transition-opacity duration-300 group-hover:opacity-100", isActive && "opacity-100")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
@@ -334,14 +334,14 @@ export function GalleryCell({
     );
   }
 
-  // 5. Default Stone Tile - Story / Stat Card (e.g. 1,200+, 6, 90+)
+  // 5. Default Stone Tile - Story / Stat Card (e.g. 30+, 200+, L3)
   return (
     <div
       data-gallery-tile
       onClick={onClick}
       className={cn(
         baseClasses,
-        "bg-[#141414] p-6 sm:p-7 justify-between"
+        "bg-[#141414] p-6 sm:p-7"
       )}
     >
       {/* Dark Granite / Stone Texture */}
@@ -392,12 +392,11 @@ export function GalleryCell({
             {story}
           </p>
         )}
-        {year && !story && <div />}
-        {!year && !story && <div />}
 
-        {/* Diagonal expand arrow on hover */}
+        {/* Diagonal expand arrow on hover — self-rights via ml-auto below,
+            so no spacer element is needed when the paragraph above is absent. */}
         {revealSrc && (
-          <div className={cn("ml-auto opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105", isActive && "opacity-100 scale-105")}>
+          <div className={cn("ml-auto opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:scale-105", isActive && "opacity-100 scale-105")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"

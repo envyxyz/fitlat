@@ -32,7 +32,7 @@ export function PricingCard({
   return (
     <Card
       className={cn(
-        "relative rounded-lg flex flex-col justify-between border transition-all duration-[var(--duration-fast)] ease-[var(--motion-ease)]",
+        "relative rounded-lg flex flex-col justify-between border transition-[border-color] duration-[var(--duration-fast)] ease-[var(--motion-ease)]",
         featured
           ? "border-primary bg-surface-card shadow-lg shadow-primary/5"
           : "border-hairline bg-surface hover:border-hairline/80",

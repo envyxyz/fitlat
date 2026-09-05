@@ -1,49 +1,7 @@
 import { PricingCard } from "./pricing-card";
+import { content } from "@/content";
 
-const TIERS = [
-  {
-    tier: "Student",
-    price: "$39",
-    period: "mo",
-    tag: "Valid ID Required",
-    features: [
-      "Full strength floor & turf access",
-      "All standard group classes included",
-      "Locker room & private shower access",
-      "Month-to-month, no lock-in contract",
-    ],
-    ctaLabel: "Join as Student",
-    featured: false,
-  },
-  {
-    tier: "Casual",
-    price: "$79",
-    period: "mo",
-    tag: "Most Flexible",
-    features: [
-      "Everything in Student membership",
-      "Open coaching floor access",
-      "2 guest passes per month",
-      "Extended hours access (5am – 10pm)",
-    ],
-    ctaLabel: "Join Casual",
-    featured: false,
-  },
-  {
-    tier: "Professional Athlete",
-    price: "$149",
-    period: "mo",
-    features: [
-      "Everything in Casual membership",
-      "Individualized block programming",
-      "Priority recovery room booking",
-      "Direct 1-on-1 coach access",
-      "Full competition prep support",
-    ],
-    ctaLabel: "Apply for Athlete Tier",
-    featured: true,
-  },
-];
+const TIERS = content.pricing.tiers;
 
 /**
  * Pricing / Membership Section — CLAUDE.md section order #7.
@@ -63,11 +21,11 @@ export function PricingSection() {
         {/* Section Header */}
         <div className="mb-space-h1 max-w-2xl">
           <span className="text-caption text-caps text-primary block mb-space-caption">
-            Transparent Pricing
+            {content.pricing.eyebrow}
           </span>
-          <h2 className="text-h2 text-ink">Membership</h2>
+          <h2 className="text-h2 text-ink">{content.pricing.heading}</h2>
           <p className="mt-space-caption text-body-lg text-ink-secondary">
-            Come see the floor before you commit to anything.
+            {content.pricing.intro}
           </p>
         </div>
 

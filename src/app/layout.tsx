@@ -3,6 +3,7 @@ import { Inter, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Loader } from "@/components/fitlat";
+import { content } from "@/content";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const bebasNeue = Bebas_Neue({
@@ -12,8 +13,8 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "Fitlat",
-  description: "Fitlat — train with intent.",
+  title: content.site.metaTitle,
+  description: content.site.metaDescription,
 };
 
 export default function RootLayout({

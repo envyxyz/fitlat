@@ -7,15 +7,16 @@
 
 ## Hero
 - Headline: Train like it matters.
-- Positioning sentence: A strength and conditioning gym for people who show up on purpose. No fluff, no mirrors-and-music routine. Just the work.
+- Positioning sentence: Equipment alone doesn't build results — guidance does. Fitlat pairs a safe Islamabad training floor with highly qualified male and female coaches, group classes, and one-on-one programming built around you.
 - Primary CTA label: Book a Tour
 - Secondary CTA label (if any): See Membership
 
 ## Proof Strip
-- Stat 1 (label + number): Members trained — 1,200+
-- Stat 2 (label + number): Floor space — 14,000 sq ft
-- Stat 3 (label + number): Years open — 6
-- Stat 4 (label + number, optional): Coached sessions weekly — 90+
+Sourced from `staff.md` (founder + trainer video transcripts) — no fabricated figures.
+- Stat 1 (label + number): Years sports management experience — 30+ (Founder, Tanveer Hussain)
+- Stat 2 (label + number): Years training Islamabad — 11+ (trainer team experience)
+- Stat 3 (label + number): Client transformations coached — 200+ (Aqib Ashfaq)
+- Stat 4 (label + number, optional): Certified coaching staff — L3 (Level 3 certified trainers)
 - Metallic divider notes (behavior/motion intent): A brushed-steel bar spanning the section break. On scroll into view it catches a single light sweep once, left to right, tied to GSAP ScrollTrigger progress rather than looping. Deliberately subordinate — the site's one signature moment is the hero's motion-blurred imagery resolving into focus on load (see design-system.md), so this sweep should stay quiet rather than compete with it. Under prefers-reduced-motion it renders static with a fixed highlight, no sweep.
 
 ## Gallery
@@ -29,10 +30,11 @@
   5. Group training bay, before an early class
 
 ## Coaches
+Real staff, sourced from `staff.md` video transcripts. Photos pulled from `staff/images/` (real portraits, not stock).
 - Section heading: Coached, not just supervised
-- Coach 1: Marcus Whitfield — Strength & Conditioning — Ten years coaching collegiate lifters before he brought the same programming to Fitlat's floor.
-- Coach 2: Renata Cole — Mobility & Recovery — Started as a physical therapist; got tired of only seeing people after something already went wrong.
-- Coach 3: Devon Ashworth — Performance Training — Former semi-pro sprinter who builds Fitlat's athlete-tier programming block by block.
+- Coach 1: Tanveer Hussain — Founder / Co-Founder — 30+ years in sports management and supervision; built Fitlat around one idea — equipment alone doesn't get results, guidance does.
+- Coach 2: Aqib Ashfaq — Personal Trainer, Level 3 Certified — 12 years coaching in Islamabad and 200+ client transformations, from fat loss to injury recovery.
+- Coach 3: Laiba Shabbir — Personal Trainer, Osteopathy & Corrective Exercise — Level 3 certified with a specialization in osteopathy; trains everyone from teenagers to seniors.
 
 ## Testimonials
 - Section heading: From the floor
@@ -48,12 +50,12 @@
 - Final CTA line above the cards: Come see the floor before you commit to anything.
 
 ## Footer
-- Address/location: 214 Foundry Street, Unit 3, [City, State ZIP — placeholder]
-- Phone number: (555) 019-4482
-- Hours: Mon–Fri 5am–10pm · Sat–Sun 7am–8pm
-- Social links: Instagram @fitlat, X/Twitter @fitlatgym
+- Address/location: Islamabad, Pakistan — exact address not yet supplied (still placeholder)
+- Phone number: (555) 019-4482 — placeholder, not a real Fitlat number
+- Hours: Mon–Fri 5am–10pm · Sat–Sun 7am–8pm — placeholder, not confirmed
+- Social links: Instagram @fitlat, X/Twitter @fitlatgym — placeholder handles
 - Legal/copyright line: © 2026 Fitlat. All rights reserved.
 
 ---
 
-*Names, quotes, prices, stats, and contact details above are draft placeholders written for review — none are confirmed client facts yet.*
+*Coaches (names, roles, bios, photos) and the Islamabad location are sourced from `staff.md` and real staff photos — those are confirmed facts, not placeholders. Testimonials, pricing figures, exact address, phone number, hours, and social handles are still draft placeholders written for review — swap them in once the client supplies the real ones.*

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -21,7 +21,10 @@ if (typeof window !== "undefined") {
 export function GalleryGrid({ children, className }: { children: ReactNode; className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  // useLayoutEffect (not useEffect): the initial gsap.set below must commit
+  // before the tiles' first paint, or all 12 render fully visible for one
+  // frame before snapping to their hidden clip-path.
+  useLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 

@@ -88,10 +88,14 @@ function applyArc(el: SVGPathElement, length: number, headFrac: number, tailFrac
 }
 
 export function Loader() {
-  const [shouldRender, setShouldRender] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return !sessionStorage.getItem(SESSION_KEY);
-  });
+  // Always true on both the server render and the client's initial render —
+  // reading sessionStorage in the initializer would make the client's first
+  // render disagree with the server-rendered markup on a returning same-
+  // session visit (loader present vs. absent), which is a hydration
+  // mismatch React logs and never patches back. The "already shown" check
+  // instead happens inside the layout effect below, before first paint, so
+  // there's still no visible flash — just no SSR/client disagreement.
+  const [shouldRender, setShouldRender] = useState(true);
 
   const markWrapRef = useRef<HTMLDivElement>(null);
   const headPathRef = useRef<SVGPathElement>(null);
@@ -100,7 +104,8 @@ export function Loader() {
   const backdropRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!shouldRender) {
+    if (sessionStorage.getItem(SESSION_KEY)) {
+      setShouldRender(false);
       markFlightStarted();
       markIntroDone();
       return;
@@ -314,7 +319,12 @@ export function Loader() {
       resetIntroDone();
       resetFlightStarted();
     };
-  }, [shouldRender]);
+    // Intentionally run once on mount, not on every `shouldRender` flip —
+    // `finish()` and the "already shown" branch above both call
+    // `setShouldRender(false)`, and re-running this setup after the intro
+    // has already finished (or never started) would be pointless.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!shouldRender) return null;
 

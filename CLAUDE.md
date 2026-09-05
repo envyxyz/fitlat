@@ -32,12 +32,24 @@ Fitlat is a gym marketing site.
 
 ## Constraints
 
+- Always use the `/caveman` plugin to cut down token usage
 - No component libraries beyond shadcn/ui
 - No animation libraries beyond GSAP and Motion
 - One accent color only
 - One easing curve and two duration values across all motion
 - All motion wrapped in `prefers-reduced-motion`
 - Max one signature animated moment site-wide
+
+## Execution & Delivery Rules
+
+- **Don't over-engineer**: Deliver lean, concise, and optimal outputs. Avoid unnecessary abstractions or bloat.
+- **High confidence**: Execute decisively with high confidence.
+- **Parallel execution**: Run parallel agents/subagents to get tasks done sooner whenever applicable.
+- **Mission-critical reliability**: Outputs must work correctly and reliably without breaking ("if the outputs don't work I get fired").
+
+## Token usage
+
+- Always use `/caveman` plugin to cut down token usage.
 
 ## Content source of truth
 

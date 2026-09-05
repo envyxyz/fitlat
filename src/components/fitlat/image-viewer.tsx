@@ -29,7 +29,6 @@ export function ImageViewer({
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const panStartRef = useRef({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
 
   // Sync state during render when modal opens or initialIndex changes
   const [prevSync, setPrevSync] = useState({ isOpen, initialIndex });
@@ -138,7 +137,6 @@ export function ImageViewer({
 
   return (
     <div
-      ref={containerRef}
       role="dialog"
       aria-modal="true"
       aria-label="Image Lightbox Viewer"
@@ -178,7 +176,7 @@ export function ImageViewer({
           type="button"
           onClick={handlePrev}
           aria-label="Previous image"
-          className="absolute left-2 sm:left-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-all hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+          className="absolute left-2 sm:left-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-[color,transform] hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +199,7 @@ export function ImageViewer({
           type="button"
           onClick={handleNext}
           aria-label="Next image"
-          className="absolute right-2 sm:right-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-all hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+          className="absolute right-2 sm:right-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-[color,transform] hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw client intake material (source videos/photos) — not deployed;
+# facts already captured in CONTENT.md/src/content.ts, serving images
+# already copied into public/images/
+/staff/
+/staff.md

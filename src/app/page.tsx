@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
-      <main className="relative z-10 bg-canvas flex flex-1 flex-col overflow-x-hidden w-full max-w-full border-b border-hairline shadow-md">
+      <main className="relative z-10 bg-canvas flex flex-1 flex-col overflow-x-hidden w-full max-w-full">
         {/* Section 2: Hero (Attention) with floating tour card */}
         <Hero />
 

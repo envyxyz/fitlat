@@ -1,17 +1,14 @@
 import { StatTile } from "./stat-tile";
 import { MetallicDivider } from "./metallic-divider";
+import { content } from "@/content";
 
 /**
  * Proof Strip — CLAUDE.md section order #3.
- * 4 key proof metrics followed by the metallic divider.
+ * Proof metrics (from `content.proof`, the single source shared with the
+ * gallery's stat cells) followed by the metallic divider.
  */
 export function ProofStrip() {
-  const stats = [
-    { value: "1,200+", label: "Members Trained" },
-    { value: "14,000", label: "Floor Space (sq ft)" },
-    { value: "6", label: "Years Open" },
-    { value: "90+", label: "Coached Sessions Weekly" },
-  ];
+  const stats = Object.values(content.proof);
 
   return (
     <section

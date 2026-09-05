@@ -1,10 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "./reveal";
 import { TourModal } from "./tour-modal";
 import { useIntroReveal } from "@/hooks/use-intro-reveal";
+import { content } from "@/content";
+
+const hero = content.hero;
 
 /**
  * Hero — CLAUDE.md section order #2.
@@ -16,16 +20,21 @@ import { useIntroReveal } from "@/hooks/use-intro-reveal";
  */
 export function Hero() {
   const revealed = useIntroReveal();
+  const heroImageRef = useRef<HTMLImageElement>(null);
 
   return (
     <section
       data-nav-surface="transparent"
       className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-canvas pt-20 pb-space-h1 lg:pb-space-h2"
     >
-      {/* Background Cinematic Training Image */}
+      {/* Background Cinematic Training Image. `will-change` is scoped to the
+          blur/scale transition's duration only (cleared on transitionend) —
+          an unblurred fill image doesn't need its own compositor layer once
+          the reveal is done. */}
       <Image
-        src="/images/hero/hero-training.jpg"
-        alt="Fitlat athletes training on the strength floor"
+        ref={heroImageRef}
+        src={hero.backgroundImage.src}
+        alt={hero.backgroundImage.alt}
         fill
         priority
         sizes="100vw"
@@ -33,6 +42,10 @@ export function Hero() {
         style={{
           filter: revealed ? "blur(0px)" : "blur(14px)",
           transform: revealed ? "scale(1)" : "scale(1.04)",
+          willChange: revealed ? undefined : "filter, transform",
+        }}
+        onTransitionEnd={() => {
+          if (heroImageRef.current) heroImageRef.current.style.willChange = "";
         }}
       />
 
@@ -65,39 +78,39 @@ export function Hero() {
                 aria-hidden="true"
                 className="size-1.5 rounded-full bg-primary animate-pulse"
               />
-              <span>Trusted by Worldwide Athletes</span>
+              <span>{hero.eyebrow}</span>
             </div>
           </Reveal>
 
           {/* Display Heading — 2-line guarantee with wide max-w */}
           <Reveal revealed={revealed} from="left" index={1}>
             <h1 className="text-display text-ink max-w-measure-display tracking-tight">
-              Train like it matters.
+              {hero.headline}
             </h1>
           </Reveal>
 
           {/* Positioning Copy */}
           <Reveal revealed={revealed} from="left" index={2}>
             <p className="text-body-lg text-ink-secondary max-w-measure">
-              A strength and conditioning gym for people who show up on purpose. No fluff, no mirrors-and-music routine. Just the work.
+              {hero.positioning}
             </p>
           </Reveal>
 
           {/* Dual Action CTAs */}
           <Reveal revealed={revealed} from="left" index={3}>
             <div className="flex flex-col gap-space-small pt-space-xs sm:flex-row sm:items-center">
-              <a href="#facilities" className="w-full sm:w-auto">
+              <a href={hero.ctaPrimary.href} className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto px-6 font-semibold">
-                  Book a Tour
+                  {hero.ctaPrimary.label}
                 </Button>
               </a>
-              <a href="#membership" className="w-full sm:w-auto">
+              <a href={hero.ctaSecondary.href} className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   variant="outline"
                   className="w-full sm:w-auto px-6 border-hairline bg-surface/60 backdrop-blur-md hover:bg-surface-card"
                 >
-                  See Membership
+                  {hero.ctaSecondary.label}
                 </Button>
               </a>
             </div>
@@ -112,12 +125,12 @@ export function Hero() {
           className="lg:col-span-4 lg:col-start-9 flex justify-start lg:justify-end"
         >
           <TourModal>
-            <div className="group relative w-full max-w-[24rem] overflow-hidden rounded-xl border border-hairline bg-surface-card/90 p-3 shadow-2xl backdrop-blur-lg transition-all duration-[var(--duration-fast)] ease-[var(--motion-ease)] hover:border-primary/50">
+            <div className="group relative w-full max-w-[24rem] overflow-hidden rounded-xl border border-hairline bg-surface-card/90 p-3 shadow-2xl backdrop-blur-lg transition-[border-color] duration-[var(--duration-fast)] ease-[var(--motion-ease)] hover:border-primary/50">
               {/* Card Video/Image Preview Container */}
               <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-canvas-soft">
                 <Image
-                  src="/images/hero/hero-motion-texture.jpg"
-                  alt="Fitlat athlete training preview"
+                  src={hero.tourCard.previewImage.src}
+                  alt={hero.tourCard.previewImage.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 360px"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -147,7 +160,7 @@ export function Hero() {
 
                 {/* Subtle top tag */}
                 <div className="absolute top-2 left-2 rounded-sm bg-canvas/80 px-2 py-0.5 text-caption text-caps text-ink backdrop-blur-sm">
-                  Floor Tour
+                  {hero.tourCard.tag}
                 </div>
               </div>
 
@@ -156,46 +169,33 @@ export function Hero() {
                 {/* Overlapping Avatar Stack */}
                 <div className="flex items-center">
                   <div className="flex -space-x-2 overflow-hidden">
-                    <div className="relative size-7 rounded-full border-2 border-surface-card overflow-hidden">
-                      <Image
-                        src="/images/testimonials/priya-malhotra.jpg"
-                        alt="Priya Malhotra"
-                        fill
-                        sizes="28px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="relative size-7 rounded-full border-2 border-surface-card overflow-hidden">
-                      <Image
-                        src="/images/testimonials/james-okonkwo.jpg"
-                        alt="James Okonkwo"
-                        fill
-                        sizes="28px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="relative size-7 rounded-full border-2 border-surface-card overflow-hidden">
-                      <Image
-                        src="/images/testimonials/sofia-reyes.jpg"
-                        alt="Sofia Reyes"
-                        fill
-                        sizes="28px"
-                        className="object-cover"
-                      />
-                    </div>
+                    {hero.tourCard.avatars.map((avatar) => (
+                      <div
+                        key={avatar.src}
+                        className="relative size-7 rounded-full border-2 border-surface-card overflow-hidden"
+                      >
+                        <Image
+                          src={avatar.src}
+                          alt={avatar.alt}
+                          fill
+                          sizes="28px"
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
                   </div>
                   <span className="ml-2 text-caption font-semibold text-primary">
-                    +1.2k
+                    {hero.tourCard.countLabel}
                   </span>
                 </div>
 
                 {/* Caption text */}
                 <div className="text-right">
                   <span className="block text-caption text-caps text-ink-muted">
-                    Trusted by
+                    {hero.tourCard.captionTop}
                   </span>
                   <span className="block text-small font-medium text-ink">
-                    Worldwide
+                    {hero.tourCard.captionBottom}
                   </span>
                 </div>
               </div>

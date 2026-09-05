@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { PlusSignIcon, Clock01Icon, Call02Icon, InstagramIcon, NewTwitterIcon } from "@hugeicons/core-free-icons";
 import { MenuToggle } from "./menu-toggle";
-import { NAV_ITEMS, FOOTER_CONTACT } from "@/lib/nav";
+import { content } from "@/content";
 import { cn } from "@/lib/utils";
 
-// Mirrors --duration-shock (350ms) — the panel's own slide duration. Text
+const NAV_ITEMS = content.header.navItems;
+const FOOTER_CONTACT = content.footer.contact;
+
+// Matches the panel's own slide duration (--duration-shock is 500ms). Text
 // waits this long after the panel starts opening before it appears, and the
 // panel waits the text's own close duration before it starts sliding away —
 // so the two never move at the same time in either direction.
@@ -67,9 +70,9 @@ export function MobileMenu() {
               <MenuToggle open />
             </Dialog.Close>
             <a
-              href="#membership"
+              href={content.header.ctaHref}
               className="flex size-11 items-center justify-center rounded-sm text-ink outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
-              aria-label="Join Fitlat"
+              aria-label={content.header.ctaLabel}
             >
               <HugeiconsIcon icon={PlusSignIcon} size={22} strokeWidth={2} />
             </a>
@@ -104,12 +107,14 @@ export function MobileMenu() {
                   aria-hidden="true"
                 />
                 <div className="flex flex-col gap-0.5 text-caption leading-relaxed">
-                  <span className="text-ink-secondary font-medium">
-                    Mon–Fri 5:00 AM – 10:00 PM
-                  </span>
-                  <span className="text-ink-muted">
-                    Sat–Sun 7:00 AM – 8:00 PM
-                  </span>
+                  {FOOTER_CONTACT.hours.split(" · ").map((line, i) => (
+                    <span
+                      key={line}
+                      className={i === 0 ? "text-ink-secondary font-medium" : "text-ink-muted"}
+                    >
+                      {line}
+                    </span>
+                  ))}
                 </div>
               </div>
             </MenuLine>
@@ -136,39 +141,30 @@ export function MobileMenu() {
             {/* Social Media Channels */}
             <MenuLine index={NAV_ITEMS.length + 2}>
               <div className="flex items-center gap-space-lg pt-space-xxs text-ink-muted">
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Fitlat on Instagram"
-                  className="flex items-center gap-space-xs text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)]"
-                >
-                  <HugeiconsIcon
-                    icon={InstagramIcon}
-                    size={16}
-                    strokeWidth={1.5}
-                    className="shrink-0 text-primary/75"
-                    aria-hidden="true"
-                  />
-                  <span>@fitlat</span>
-                </a>
-                <span className="h-3 w-px bg-hairline" aria-hidden="true" />
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Fitlat on X (Twitter)"
-                  className="flex items-center gap-space-xs text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)]"
-                >
-                  <HugeiconsIcon
-                    icon={NewTwitterIcon}
-                    size={16}
-                    strokeWidth={1.5}
-                    className="shrink-0 text-primary/75"
-                    aria-hidden="true"
-                  />
-                  <span>@fitlatgym</span>
-                </a>
+                {FOOTER_CONTACT.socials.map((social, i) => {
+                  const icon = social.label === "Instagram" ? InstagramIcon : NewTwitterIcon;
+                  return (
+                    <Fragment key={social.handle}>
+                      {i > 0 && <span className="h-3 w-px bg-hairline" aria-hidden="true" />}
+                      <a
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Fitlat on ${social.label}`}
+                        className="flex items-center gap-space-xs text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)]"
+                      >
+                        <HugeiconsIcon
+                          icon={icon}
+                          size={16}
+                          strokeWidth={1.5}
+                          className="shrink-0 text-primary/75"
+                          aria-hidden="true"
+                        />
+                        <span>{social.handle}</span>
+                      </a>
+                    </Fragment>
+                  );
+                })}
               </div>
             </MenuLine>
           </div>
@@ -204,12 +200,17 @@ function MenuLine({ children, index }: { children: React.ReactNode; index: numbe
           "translate-y-full",
           // Transition setup: transform only, shock easing
           "transition-transform ease-[var(--motion-ease-shock)]",
-          // Default (closed) duration — used for the exit animation
-          `duration-[${TEXT_CLOSE_DURATION}ms]`,
+          // Default (closed) duration — used for the exit animation.
+          // Tailwind v4 only extracts candidates it can see as literal
+          // source text — a `${TEXT_CLOSE_DURATION}` template literal is
+          // invisible to that scan, so these two durations must stay
+          // hardcoded literals in sync with the constants above, not
+          // interpolated from them.
+          "duration-[280ms]",
           // Entry: once panel is open and starting-style has cleared,
           // slide up into view with the longer entry duration + stagger
           "[[data-open]:not([data-starting-style])_&]:translate-y-0",
-          `[[data-open]:not([data-starting-style])_&]:duration-[${PANEL_DURATION}ms]`,
+          "[[data-open]:not([data-starting-style])_&]:duration-[500ms]",
           "[[data-open]:not([data-starting-style])_&]:delay-[var(--stagger)]",
           // Exit: data-ending-style fires on close — slide back down,
           // no delay, using the default (shorter) duration already set
