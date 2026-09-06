@@ -57,7 +57,7 @@ Real staff, sourced from `staff.md` video transcripts. Photos pulled from `staff
 - Address/location: Islamabad, Pakistan (exact address not yet supplied, still placeholder)
 - Phone / WhatsApp: +92 335 0157000 (`https://wa.me/923350157000`)
 - Hours: Mon–Fri 5am–10pm · Sat–Sun 7am–8pm (placeholder, not confirmed)
-- Social links: Instagram @fitlat, X/Twitter @fitlatgym (placeholder handles)
+- Social links: Instagram @fitlat
 - Legal/copyright line: FITLAT © All rights reserved. A strength and conditioning gym in Islamabad.
 
 ---

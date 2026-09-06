@@ -393,7 +393,6 @@ export const content = {
       {
         heading: "Updates",
         links: [
-          { label: "Twitter", href: "https://twitter.com", external: true },
           { label: "Instagram", href: "https://instagram.com", external: true },
         ],
       },
@@ -404,7 +403,6 @@ export const content = {
       whatsapp: getWhatsAppLink("Hi Fitlat, I'd like to get in touch."),
       socials: [
         { label: "Instagram", handle: "@fitlat", href: "https://instagram.com" },
-        { label: "X/Twitter", handle: "@fitlatgym", href: "https://twitter.com" },
       ],
     },
     legalLine: "FITLAT © All rights reserved. A strength and conditioning gym in Islamabad.",

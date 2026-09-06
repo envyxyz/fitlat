@@ -3,7 +3,7 @@
 import { Fragment, useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { PlusSignIcon, Clock01Icon, Call02Icon, InstagramIcon, NewTwitterIcon } from "@hugeicons/core-free-icons";
+import { PlusSignIcon, Call02Icon, InstagramIcon } from "@hugeicons/core-free-icons";
 import { MenuToggle } from "./menu-toggle";
 import { content } from "@/content";
 import { cn } from "@/lib/utils";
@@ -99,19 +99,18 @@ export function MobileMenu() {
 
           <div className="border-t border-hairline px-space-body-lg py-space-h3 text-body">
             <MenuLine index={NAV_ITEMS.length}>
-              <div className="grid grid-cols-2 gap-4 items-start">
-                {/* Left Column: Hours with bullet points and white text */}
+              <div className="grid grid-cols-2 gap-x-6 sm:gap-x-10 items-start">
+                {/* Left Column: Hours (2 lines) */}
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-[11px] text-caps text-ink-muted font-semibold tracking-wider">
+                  <span className="text-[11px] text-caps text-ink-muted font-semibold tracking-wider h-4 flex items-center">
                     HOURS
                   </span>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2.5">
                     {FOOTER_CONTACT.hours.split(" · ").map((line) => (
-                      <div key={line} className="flex items-center gap-2.5">
-                        <span
-                          className="size-1.5 rounded-full bg-primary shrink-0"
-                          aria-hidden="true"
-                        />
+                      <div key={line} className="flex items-center gap-2.5 h-6">
+                        <span className="flex size-4 items-center justify-center shrink-0" aria-hidden="true">
+                          <span className="size-1.5 rounded-full bg-primary" />
+                        </span>
                         <span className="text-caption text-white font-medium whitespace-nowrap">
                           {line}
                         </span>
@@ -120,50 +119,49 @@ export function MobileMenu() {
                   </div>
                 </div>
 
-                {/* Right Column: Contact & Socials in separate lines */}
+                {/* Right Column: Connect (2 lines: Phone + Instagram) */}
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-[11px] text-caps text-ink-muted font-semibold tracking-wider">
+                  <span className="text-[11px] text-caps text-ink-muted font-semibold tracking-wider h-4 flex items-center">
                     CONNECT
                   </span>
-                  <div className="flex flex-col gap-2">
-                    {/* Phone / Call */}
+                  <div className="flex flex-col gap-2.5">
+                    {/* Phone / WhatsApp */}
                     <a
                       href={`tel:${FOOTER_CONTACT.phone.replace(/[^0-9+]/g, "")}`}
-                      className="flex items-center gap-2.5 text-caption text-white font-medium hover:text-primary transition-colors duration-[var(--duration-fast)]"
+                      className="flex items-center gap-2.5 h-6 text-caption text-white font-medium hover:text-primary transition-colors duration-[var(--duration-fast)]"
                     >
-                      <HugeiconsIcon
-                        icon={Call02Icon}
-                        size={16}
-                        strokeWidth={1.5}
-                        className="shrink-0 text-primary"
-                        aria-hidden="true"
-                      />
+                      <span className="flex size-4 items-center justify-center shrink-0" aria-hidden="true">
+                        <HugeiconsIcon
+                          icon={Call02Icon}
+                          size={16}
+                          strokeWidth={1.5}
+                          className="text-primary"
+                        />
+                      </span>
                       <span className="whitespace-nowrap">{FOOTER_CONTACT.phone}</span>
                     </a>
 
-                    {/* Socials on separate stacked lines */}
-                    {FOOTER_CONTACT.socials.map((social) => {
-                      const icon = social.label === "Instagram" ? InstagramIcon : NewTwitterIcon;
-                      return (
-                        <a
-                          key={social.handle}
-                          href={social.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Fitlat on ${social.label}`}
-                          className="flex items-center gap-2.5 text-caption text-white font-medium hover:text-primary transition-colors duration-[var(--duration-fast)]"
-                        >
+                    {/* Instagram */}
+                    {FOOTER_CONTACT.socials.map((social) => (
+                      <a
+                        key={social.handle}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Fitlat on ${social.label}`}
+                        className="flex items-center gap-2.5 h-6 text-caption text-white font-medium hover:text-primary transition-colors duration-[var(--duration-fast)]"
+                      >
+                        <span className="flex size-4 items-center justify-center shrink-0" aria-hidden="true">
                           <HugeiconsIcon
-                            icon={icon}
+                            icon={InstagramIcon}
                             size={16}
                             strokeWidth={1.5}
-                            className="shrink-0 text-primary"
-                            aria-hidden="true"
+                            className="text-primary"
                           />
-                          <span>{social.handle}</span>
-                        </a>
-                      );
-                    })}
+                        </span>
+                        <span className="whitespace-nowrap">{social.handle}</span>
+                      </a>
+                    ))}
                   </div>
                 </div>
               </div>
