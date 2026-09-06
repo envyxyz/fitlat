@@ -7,11 +7,13 @@
 
 interface PricingTier {
   tier: string;
+  currency: string;
   price: string;
   period: string;
   tag?: string;
   features: string[];
   ctaLabel: string;
+  ctaHref: string;
   featured: boolean;
 }
 
@@ -31,7 +33,7 @@ export const content = {
     name: "Fitlat",
     wordmark: "FITLAT",
     metaTitle: "Fitlat",
-    metaDescription: "Fitlat — train with intent.",
+    metaDescription: "Fitlat is a strength and conditioning gym in Islamabad, built for people who train with intent.",
   },
 
   header: {
@@ -50,7 +52,7 @@ export const content = {
     eyebrow: "Guidance Over Equipment",
     headline: "Train like it matters.",
     positioning:
-      "Equipment alone doesn't build results — guidance does. Fitlat pairs a safe Islamabad training floor with highly qualified male and female coaches, group classes, and one-on-one programming built around you.",
+      "Equipment alone doesn't build results; guidance does. Fitlat pairs a safe Islamabad training floor with highly qualified male and female coaches, group classes, and one-on-one programming built around you.",
     ctaPrimary: { label: "Book a Tour", href: "#facilities" },
     ctaSecondary: { label: "See Membership", href: "#membership" },
     backgroundImage: {
@@ -69,7 +71,7 @@ export const content = {
         { src: "/images/testimonials/sofia-reyes.jpg", alt: "Sofia Reyes" },
       ],
       countLabel: "+200",
-      captionTop: "Trusted by",
+      captionTop: "Trusted in",
       captionBottom: "Islamabad",
     },
   },
@@ -181,7 +183,7 @@ export const content = {
         id: "cell-2-4",
         variant: "stone-story" as const,
         story:
-          "Every session starts with an assessment, not a machine — guidance before equipment.",
+          "Every session starts with an assessment, not a machine: guidance before equipment.",
         revealSrc: "/images/gallery/recovery-room.jpg",
         alt: "Fitlat coaching philosophy",
         viewerIndex: 3,
@@ -190,7 +192,7 @@ export const content = {
         id: "cell-3-1",
         variant: "stone-story" as const,
         statKey: "certification" as const,
-        story: "Certified trainers — corrective exercise, osteopathy, and strength coaching under one roof.",
+        story: "Certified trainers, covering corrective exercise, osteopathy, and strength coaching under one roof.",
         revealSrc: "/images/gallery/group-bay.jpg",
         alt: "Level 3 certified coaching staff",
         viewerIndex: 4,
@@ -230,7 +232,7 @@ export const content = {
       alt: "Fitlat main training floor and lifting platforms",
     },
     mediaTitle: "Main Lifting Platforms & Turf",
-    mediaCaption: "A coached strength floor — assessed, guided, and built around your goals.",
+    mediaCaption: "A coached strength floor: assessed, guided, and built around your goals.",
     openStatusLabel: "Floor Open Now · 5:00 AM – 10:00 PM",
     closeLabel: "Close Preview",
     ctaLabel: "Join Fitlat",
@@ -243,18 +245,18 @@ export const content = {
       {
         name: "Tanveer Hussain",
         role: "Founder / Co-Founder",
-        bio: "30+ years in sports management and supervision; built Fitlat around one idea — equipment alone doesn't get results, guidance does.",
+        bio: "30+ years in sports management and supervision. Built Fitlat around one idea: equipment alone doesn't get results, guidance does.",
         image: "/images/coaches/tanveer-hussain.png",
       },
       {
         name: "Aqib Ashfaq",
-        role: "Personal Trainer — Level 3 Certified",
+        role: "Personal Trainer, Level 3 Certified",
         bio: "12 years coaching in Islamabad and 200+ client transformations, from fat loss to injury recovery.",
         image: "/images/coaches/aqib-ashfaq.png",
       },
       {
         name: "Laiba Shabbir",
-        role: "Personal Trainer — Osteopathy & Corrective Exercise",
+        role: "Personal Trainer, Osteopathy & Corrective Exercise",
         bio: "Level 3 certified with a specialization in osteopathy; trains everyone from teenagers to seniors.",
         image: "/images/coaches/laiba-shabbir.png",
       },
@@ -292,54 +294,64 @@ export const content = {
     ],
   },
 
-  // No confirmed pricing exists yet — figures remain flagged placeholders
-  // (see CONTENT.md) until the client supplies real tiers.
+  // Figures are Islamabad-market benchmarks (Sept 2026), not client-confirmed —
+  // see CONTENT.md. Swap in real tiers once the client supplies them.
   pricing: {
     eyebrow: "Transparent Pricing",
     heading: "Membership",
     intro: "Come see the floor before you commit to anything.",
+    note: "One-time registration fee applies on the Student and Professional Athlete tiers; waived on Casual.",
     tiers: [
       {
         tier: "Student",
-        price: "$39",
-        period: "mo",
+        currency: "PKR",
+        price: "7,500",
+        period: "/mo",
         tag: "Valid ID Required",
         features: [
           "Full strength floor & turf access",
           "All standard group classes included",
           "Locker room & private shower access",
+          "Off-peak access (6am – 4pm, weekdays)",
           "Month-to-month, no lock-in contract",
         ],
         ctaLabel: "Join as Student",
+        ctaHref: "#visit",
         featured: false,
       },
       {
         tier: "Casual",
-        price: "$79",
-        period: "mo",
-        tag: "Most Flexible",
+        currency: "PKR",
+        price: "14,000",
+        period: "/mo",
+        tag: "Most Popular",
         features: [
           "Everything in Student membership",
+          "Full-hours access, 7 days a week",
           "Open coaching floor access",
           "2 guest passes per month",
-          "Extended hours access (5am – 10pm)",
+          "Registration fee waived",
         ],
         ctaLabel: "Join Casual",
-        featured: false,
+        ctaHref: "#visit",
+        featured: true,
       },
       {
         tier: "Professional Athlete",
-        price: "$149",
-        period: "mo",
+        currency: "PKR",
+        price: "32,000",
+        period: "/mo",
+        tag: "Application Required",
         features: [
           "Everything in Casual membership",
           "Individualized block programming",
-          "Priority recovery room booking",
           "Direct 1-on-1 coach access",
+          "Priority recovery room booking",
           "Full competition prep support",
         ],
         ctaLabel: "Apply for Athlete Tier",
-        featured: true,
+        ctaHref: "#visit",
+        featured: false,
       },
     ] as PricingTier[],
   },
@@ -377,7 +389,7 @@ export const content = {
         { label: "X/Twitter", handle: "@fitlatgym", href: "https://twitter.com" },
       ],
     },
-    legalLine: "FITLAT © — All rights reserved. Strength and conditioning gym.",
+    legalLine: "FITLAT © All rights reserved. A strength and conditioning gym in Islamabad.",
   },
 } as const;
 

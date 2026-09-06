@@ -35,16 +35,22 @@ export function PricingSection() {
             <PricingCard
               key={tier.tier}
               tier={tier.tier}
+              currency={tier.currency}
               price={tier.price}
               period={tier.period}
               tag={tier.tag}
               features={tier.features}
               ctaLabel={tier.ctaLabel}
+              ctaHref={tier.ctaHref}
               featured={tier.featured}
               className="h-full"
             />
           ))}
         </div>
+
+        <p className="mt-space-body text-caption text-ink-faint">
+          {content.pricing.note}
+        </p>
       </div>
     </section>
   );

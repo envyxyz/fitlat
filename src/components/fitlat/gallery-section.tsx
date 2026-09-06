@@ -44,7 +44,7 @@ const CELLS: (GalleryCellData & { viewerIndex: number })[] = content.gallery.cel
     return {
       ...base,
       quote: `"${testimonial.quote}"`,
-      author: `${testimonial.name.toUpperCase()} — ${testimonial.detail.toUpperCase()}`,
+      author: `${testimonial.name.toUpperCase()}, ${testimonial.detail.toUpperCase()}`,
     };
   }
 

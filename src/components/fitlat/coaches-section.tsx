@@ -39,7 +39,7 @@ export function CoachesSection() {
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-canvas-soft mb-space-small">
                   <Image
                     src={coach.image}
-                    alt={`${coach.name} — ${coach.role} coach at Fitlat`}
+                    alt={`${coach.name}, ${coach.role} coach at Fitlat`}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"

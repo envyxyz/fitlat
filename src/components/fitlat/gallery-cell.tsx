@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { content } from "@/content";
 import type { ReactNode } from "react";
 
 export type CellVariant =
@@ -42,7 +43,7 @@ export function GalleryCell({
   author,
   imageSrc,
   revealSrc,
-  alt = "Fitlat Facility & Proof",
+  alt = `${content.site.name} facility`,
   caption,
   onClick,
   className,

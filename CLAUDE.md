@@ -55,6 +55,21 @@ Fitlat is a gym marketing site.
 
 All copy, tokens, and content per section live in `CONTENT.md` at the project root. Treat it as authoritative when building components — do not invent copy independently. If a section in `CONTENT.md` is still empty/TODO, do not build that section's content, or use an obvious placeholder marker and flag it rather than writing real-sounding copy.
 
+## `src/content.ts` is the only place copy lives in code (hard rule)
+
+`CONTENT.md` is the human-readable spec; `src/content.ts` is its typed, in-code mirror, and every component reads from it. This is not optional and not per-component discretion.
+
+- **No hardcoded user-facing strings in components.** Headings, body copy, labels, button text, alt text, stat numbers, testimonial quotes, coach bios, nav items, footer links: all of it comes from `import { content } from "@/content"`, never a literal string typed inline in a `.tsx` file. Aria-labels and other pure accessibility/structural chrome (dialog close labels, landmark roles) are the one exception — those aren't editorial content and don't need a `content.ts` entry.
+- **One fact, one field.** If the same number, name, or phrase shows up in more than one section (e.g. a stat quoted in both the proof strip and a gallery cell, or a testimonial reused in a gallery quote card), it lives once in `content.ts` and every usage references that field (or an index/key into it), never a second copy of the literal string.
+- **Update `CONTENT.md` first, then mirror the change into `content.ts`.** They must never drift: if you change one, change the other in the same pass.
+- **Before adding any new visible text to a component**, check whether `content.ts` already has a field for it. If not, add the field to the right section of `content.ts` (and to `CONTENT.md`), then reference it. Never take the shortcut of typing the string directly into the component "for now."
+- **When reviewing or extending any component**, grep it for quoted string literals in JSX/props first. A stray hardcoded string is a bug, not a style nit.
+
+## Copy style
+
+- No em dashes anywhere in copy shown to the user (headings, body text, labels, alt text). Use a comma, colon, semicolon, or a new sentence instead. En dashes in numeric ranges (`5am–10pm`, `Mon–Fri`) are fine; the em dash specifically is not.
+- Keep copy professional and grounded: plain, active sentences, concrete specifics over vague marketing language, no invented statistics. See `staff.md`-sourced facts as the model for tone.
+
 ## Layout grid — 12-column alignment (hard rule)
 
 Every full-width section must sit inside the **same canonical container** so
