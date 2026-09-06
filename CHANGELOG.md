@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-09-06
+
+### Added
+- **Social Media Rich Presence & OpenGraph Metadata** (`src/app/layout.tsx`, `src/content.ts`, `CONTENT.md`, `public/og-image.jpg`): Configured comprehensive Next.js metadata architecture supporting rich chat preview embeds on WhatsApp, Discord, Twitter, Facebook, Slack, and iMessage:
+  - High-resolution 1200×630 OpenGraph and Twitter card image (`/og-image.jpg`).
+  - Standardized OpenGraph title, description, URL (`https://fitlat.vercel.app`), locale, type, and site name.
+  - Twitter `summary_large_image` configuration with responsive dimensions and alt text.
+  - Dark mode system `theme-color: #0A0A0A` and `color-scheme: dark`.
+  - Canonical URL and search engine indexing robot directives.
+
 ## [0.4.0] - 2026-09-06
 
 ### Added

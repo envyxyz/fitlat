@@ -39,8 +39,19 @@ export const content = {
   site: {
     name: "Fitlat",
     wordmark: "FITLAT",
-    metaTitle: "Fitlat",
-    metaDescription: "Fitlat is a strength and conditioning gym in Islamabad, built for people who train with intent.",
+    metaTitle: "Fitlat — Strength & Conditioning Gym Islamabad",
+    metaDescription:
+      "Fitlat is a premier strength and conditioning gym in Islamabad, built for people who train with intent. Expert male & female coaching, group classes, and one-on-one programming.",
+    url: "https://fitlat.vercel.app",
+    ogImage: {
+      url: "/og-image.jpg",
+      width: 1200,
+      height: 630,
+      alt: "Fitlat — Strength & Conditioning Gym Islamabad",
+      type: "image/jpeg",
+    },
+    locale: "en_US",
+    themeColor: "#0A0A0A",
   },
 
   contact: {

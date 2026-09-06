@@ -1,5 +1,13 @@
 # Fitlat: Site Content
 
+## Site & Social Metadata (OpenGraph / Rich Presence)
+- Site Name: Fitlat
+- Base URL: `https://fitlat.vercel.app`
+- Title: Fitlat — Strength & Conditioning Gym Islamabad
+- Description: Fitlat is a premier strength and conditioning gym in Islamabad, built for people who train with intent. Expert male & female coaching, group classes, and one-on-one programming.
+- OpenGraph Image: `/og-image.jpg` (1200×630, high-contrast dark branded preview card for WhatsApp, Discord, Twitter, Facebook)
+- Theme Color: `#0A0A0A`
+
 ## Header
 - Logo/wordmark treatment: "FITLAT" set in the display grotesk, all caps, tight tracking, no icon mark. The wordmark carries the whole thing on its own; nothing sits next to it.
 - Nav items: Facilities, Team, Membership, Visit
