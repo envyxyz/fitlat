@@ -260,7 +260,7 @@ export function GalleryCell({
     );
   }
 
-  // 4. Stone Tile - Member Quote Card (e.g. Priya Malhotra quote)
+  // 4. Stone Tile - Member Quote Card (e.g. Zainab Malik quote)
   if (variant === "stone-quote") {
     return (
       <div

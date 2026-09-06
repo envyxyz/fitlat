@@ -73,7 +73,7 @@ export function PricingCard({
         <Button
           variant={featured ? "default" : "outline"}
           size="lg"
-          render={<a href={ctaHref} />}
+          render={<a href={ctaHref} target="_blank" rel="noopener noreferrer" />}
           nativeButton={false}
           className={cn(
             "w-full h-11",

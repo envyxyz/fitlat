@@ -28,6 +28,13 @@ interface FooterColumn {
   links: FooterLink[];
 }
 
+const WHATSAPP_NUMBER = "923350157000";
+const WHATSAPP_BASE = `https://wa.me/${WHATSAPP_NUMBER}`;
+
+function getWhatsAppLink(message: string): string {
+  return `${WHATSAPP_BASE}?text=${encodeURIComponent(message)}`;
+}
+
 export const content = {
   site: {
     name: "Fitlat",
@@ -36,15 +43,21 @@ export const content = {
     metaDescription: "Fitlat is a strength and conditioning gym in Islamabad, built for people who train with intent.",
   },
 
+  contact: {
+    phone: "+92 335 0157000",
+    whatsappNumber: WHATSAPP_NUMBER,
+    whatsappUrl: WHATSAPP_BASE,
+  },
+
   header: {
     navItems: [
       { label: "Facilities", href: "#facilities" },
-      { label: "Coaches", href: "#coaches" },
+      { label: "Team", href: "#coaches" },
       { label: "Membership", href: "#membership" },
       { label: "Visit", href: "#visit" },
     ],
     ctaLabel: "Join Fitlat",
-    ctaHref: "#membership",
+    ctaHref: getWhatsAppLink("Hi Fitlat, I'd like to learn more about joining the gym."),
     logoAriaLabel: "Fitlat home",
   },
 
@@ -53,7 +66,10 @@ export const content = {
     headline: "Train like it matters.",
     positioning:
       "Equipment alone doesn't build results; guidance does. Fitlat pairs a safe Islamabad training floor with highly qualified male and female coaches, group classes, and one-on-one programming built around you.",
-    ctaPrimary: { label: "Book a Tour", href: "#facilities" },
+    ctaPrimary: {
+      label: "Book a Tour",
+      href: getWhatsAppLink("Hi Fitlat, I'd like to book a floor tour."),
+    },
     ctaSecondary: { label: "See Membership", href: "#membership" },
     backgroundImage: {
       src: "/images/hero/hero-training.jpg",
@@ -66,9 +82,9 @@ export const content = {
       },
       tag: "Floor Tour",
       avatars: [
-        { src: "/images/testimonials/priya-malhotra.jpg", alt: "Priya Malhotra" },
-        { src: "/images/testimonials/james-okonkwo.jpg", alt: "James Okonkwo" },
-        { src: "/images/testimonials/sofia-reyes.jpg", alt: "Sofia Reyes" },
+        { src: "/images/testimonials/priya-malhotra.jpg", alt: "Zainab Malik" },
+        { src: "/images/testimonials/james-okonkwo.jpg", alt: "Bilal Ahmed" },
+        { src: "/images/testimonials/sofia-reyes.jpg", alt: "Hamza Khan" },
       ],
       countLabel: "+200",
       captionTop: "Trusted in",
@@ -236,6 +252,7 @@ export const content = {
     openStatusLabel: "Floor Open Now · 5:00 AM – 10:00 PM",
     closeLabel: "Close Preview",
     ctaLabel: "Join Fitlat",
+    ctaHref: getWhatsAppLink("Hi Fitlat, I'd like to join the gym."),
   },
 
   coaches: {
@@ -273,21 +290,21 @@ export const content = {
       {
         quote:
           "I switched gyms four times before Fitlat. This is the first one where a coach actually watched my form without me asking.",
-        name: "Priya Malhotra",
+        name: "Zainab Malik",
         detail: "Member since 2023",
         image: "/images/testimonials/priya-malhotra.jpg",
       },
       {
         quote:
           "Between clinicals I get maybe forty minutes. The coaches here plan around that instead of pretending I have two hours.",
-        name: "James Okonkwo",
+        name: "Bilal Ahmed",
         detail: "Member since 2024",
         image: "/images/testimonials/james-okonkwo.jpg",
       },
       {
         quote:
           "I train for competition, not for a hobby, and Fitlat is the only gym nearby that didn't treat that as a weird request.",
-        name: "Sofia Reyes",
+        name: "Hamza Khan",
         detail: "Member since 2022",
         image: "/images/testimonials/sofia-reyes.jpg",
       },
@@ -316,7 +333,7 @@ export const content = {
           "Month-to-month, no lock-in contract",
         ],
         ctaLabel: "Join as Student",
-        ctaHref: "#visit",
+        ctaHref: getWhatsAppLink("Hi Fitlat, I'm interested in joining the Student membership plan."),
         featured: false,
       },
       {
@@ -333,7 +350,7 @@ export const content = {
           "Registration fee waived",
         ],
         ctaLabel: "Join Casual",
-        ctaHref: "#visit",
+        ctaHref: getWhatsAppLink("Hi Fitlat, I'm interested in joining the Casual membership plan."),
         featured: true,
       },
       {
@@ -350,7 +367,7 @@ export const content = {
           "Full competition prep support",
         ],
         ctaLabel: "Apply for Athlete Tier",
-        ctaHref: "#visit",
+        ctaHref: getWhatsAppLink("Hi Fitlat, I would like to apply for the Professional Athlete membership tier."),
         featured: false,
       },
     ] as PricingTier[],
@@ -383,7 +400,8 @@ export const content = {
     ] as FooterColumn[],
     contact: {
       hours: "Mon–Fri 5am–10pm · Sat–Sun 7am–8pm",
-      phone: "(555) 019-4482",
+      phone: "+92 335 0157000",
+      whatsapp: getWhatsAppLink("Hi Fitlat, I'd like to get in touch."),
       socials: [
         { label: "Instagram", handle: "@fitlat", href: "https://instagram.com" },
         { label: "X/Twitter", handle: "@fitlatgym", href: "https://twitter.com" },

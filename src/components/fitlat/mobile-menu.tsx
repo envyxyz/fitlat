@@ -71,6 +71,8 @@ export function MobileMenu() {
             </Dialog.Close>
             <a
               href={content.header.ctaHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex size-11 items-center justify-center rounded-sm text-ink outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
               aria-label={content.header.ctaLabel}
             >
@@ -95,76 +97,75 @@ export function MobileMenu() {
             ))}
           </nav>
 
-          <div className="flex flex-col gap-space-md border-t border-hairline px-space-body-lg py-space-h3 text-body">
-            {/* Hours Block */}
+          <div className="border-t border-hairline px-space-body-lg py-space-h3 text-body">
             <MenuLine index={NAV_ITEMS.length}>
-              <div className="flex items-start gap-space-sm text-ink-muted">
-                <HugeiconsIcon
-                  icon={Clock01Icon}
-                  size={16}
-                  strokeWidth={1.5}
-                  className="mt-0.5 shrink-0 text-primary/75"
-                  aria-hidden="true"
-                />
-                <div className="flex flex-col gap-0.5 text-caption leading-relaxed">
-                  {FOOTER_CONTACT.hours.split(" · ").map((line, i) => (
-                    <span
-                      key={line}
-                      className={i === 0 ? "text-ink-secondary font-medium" : "text-ink-muted"}
-                    >
-                      {line}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </MenuLine>
-
-            {/* Phone Block */}
-            <MenuLine index={NAV_ITEMS.length + 1}>
-              <div className="flex items-center gap-space-sm text-ink-muted">
-                <HugeiconsIcon
-                  icon={Call02Icon}
-                  size={16}
-                  strokeWidth={1.5}
-                  className="shrink-0 text-primary/75"
-                  aria-hidden="true"
-                />
-                <a
-                  href={`tel:${FOOTER_CONTACT.phone.replace(/[^0-9]/g, "")}`}
-                  className="text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)] tracking-wide"
-                >
-                  {FOOTER_CONTACT.phone}
-                </a>
-              </div>
-            </MenuLine>
-
-            {/* Social Media Channels */}
-            <MenuLine index={NAV_ITEMS.length + 2}>
-              <div className="flex items-center gap-space-lg pt-space-xxs text-ink-muted">
-                {FOOTER_CONTACT.socials.map((social, i) => {
-                  const icon = social.label === "Instagram" ? InstagramIcon : NewTwitterIcon;
-                  return (
-                    <Fragment key={social.handle}>
-                      {i > 0 && <span className="h-3 w-px bg-hairline" aria-hidden="true" />}
-                      <a
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Fitlat on ${social.label}`}
-                        className="flex items-center gap-space-xs text-caption text-ink-secondary hover:text-ink transition-colors duration-[var(--duration-fast)]"
-                      >
-                        <HugeiconsIcon
-                          icon={icon}
-                          size={16}
-                          strokeWidth={1.5}
-                          className="shrink-0 text-primary/75"
+              <div className="grid grid-cols-2 gap-4 items-start">
+                {/* Left Column: Hours with bullet points and white text */}
+                <div className="flex flex-col gap-2.5">
+                  <span className="text-[11px] text-caps text-ink-muted font-semibold tracking-wider">
+                    HOURS
+                  </span>
+                  <div className="flex flex-col gap-2">
+                    {FOOTER_CONTACT.hours.split(" · ").map((line) => (
+                      <div key={line} className="flex items-center gap-2.5">
+                        <span
+                          className="size-1.5 rounded-full bg-primary shrink-0"
                           aria-hidden="true"
                         />
-                        <span>{social.handle}</span>
-                      </a>
-                    </Fragment>
-                  );
-                })}
+                        <span className="text-caption text-white font-medium whitespace-nowrap">
+                          {line}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Column: Contact & Socials in separate lines */}
+                <div className="flex flex-col gap-2.5">
+                  <span className="text-[11px] text-caps text-ink-muted font-semibold tracking-wider">
+                    CONNECT
+                  </span>
+                  <div className="flex flex-col gap-2">
+                    {/* Phone / Call */}
+                    <a
+                      href={`tel:${FOOTER_CONTACT.phone.replace(/[^0-9+]/g, "")}`}
+                      className="flex items-center gap-2.5 text-caption text-white font-medium hover:text-primary transition-colors duration-[var(--duration-fast)]"
+                    >
+                      <HugeiconsIcon
+                        icon={Call02Icon}
+                        size={16}
+                        strokeWidth={1.5}
+                        className="shrink-0 text-primary"
+                        aria-hidden="true"
+                      />
+                      <span className="whitespace-nowrap">{FOOTER_CONTACT.phone}</span>
+                    </a>
+
+                    {/* Socials on separate stacked lines */}
+                    {FOOTER_CONTACT.socials.map((social) => {
+                      const icon = social.label === "Instagram" ? InstagramIcon : NewTwitterIcon;
+                      return (
+                        <a
+                          key={social.handle}
+                          href={social.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Fitlat on ${social.label}`}
+                          className="flex items-center gap-2.5 text-caption text-white font-medium hover:text-primary transition-colors duration-[var(--duration-fast)]"
+                        >
+                          <HugeiconsIcon
+                            icon={icon}
+                            size={16}
+                            strokeWidth={1.5}
+                            className="shrink-0 text-primary"
+                            aria-hidden="true"
+                          />
+                          <span>{social.handle}</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </MenuLine>
           </div>

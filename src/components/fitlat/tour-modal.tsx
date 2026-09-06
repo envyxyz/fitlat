@@ -101,7 +101,12 @@ export function TourModal({ children }: TourModalProps) {
                   </Button>
                 }
               />
-              <a href="#membership" className="flex-1 sm:flex-initial">
+              <a
+                href={tourModal.ctaHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial"
+              >
                 <Button className="w-full">
                   {tourModal.ctaLabel}
                 </Button>

@@ -99,7 +99,12 @@ export function Hero() {
           {/* Dual Action CTAs */}
           <Reveal revealed={revealed} from="left" index={3}>
             <div className="flex flex-col gap-space-small pt-space-xs sm:flex-row sm:items-center">
-              <a href={hero.ctaPrimary.href} className="w-full sm:w-auto">
+              <a
+                href={hero.ctaPrimary.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto"
+              >
                 <Button size="lg" className="w-full sm:w-auto px-6 font-semibold">
                   {hero.ctaPrimary.label}
                 </Button>

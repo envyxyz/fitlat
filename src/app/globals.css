@@ -122,4 +122,12 @@
   body::-webkit-scrollbar {
     display: none;
   }
+  button,
+  [role="button"],
+  a,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    cursor: pointer;
+  }
 }

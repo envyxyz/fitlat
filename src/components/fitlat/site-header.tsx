@@ -140,13 +140,15 @@ export function SiteHeader() {
             Desktop: the full CTA button takes this slot instead. */}
         <a
           href={content.header.ctaHref}
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label={content.header.ctaLabel}
           className="flex size-11 items-center justify-center justify-self-end rounded-sm text-ink outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas md:hidden"
         >
           <HugeiconsIcon icon={PlusSignIcon} size={22} strokeWidth={2} />
         </a>
         <Reveal revealed={revealed} from="right" index={2} className="hidden md:block">
-          <a href={content.header.ctaHref}>
+          <a href={content.header.ctaHref} target="_blank" rel="noopener noreferrer">
             <Button size="sm">{content.header.ctaLabel}</Button>
           </a>
         </Reveal>

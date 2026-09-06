@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -23,12 +24,17 @@ export function ImageViewer({
   isOpen,
   onClose,
 }: ImageViewerProps) {
+  const [mounted, setMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const panStartRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Sync state during render when modal opens or initialIndex changes
   const [prevSync, setPrevSync] = useState({ isOpen, initialIndex });
@@ -131,16 +137,16 @@ export function ImageViewer({
     }
   };
 
-  if (!isOpen || images.length === 0) return null;
+  if (!isOpen || images.length === 0 || !mounted) return null;
 
   const currentImage = images[currentIndex];
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
       aria-label="Image Lightbox Viewer"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md select-none touch-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/95 backdrop-blur-md select-none touch-none animate-in fade-in duration-200"
       onWheel={handleWheel}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -149,9 +155,12 @@ export function ImageViewer({
       {/* Top right close button */}
       <button
         type="button"
-        onClick={onClose}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
         aria-label="Close image viewer"
-        className="absolute top-6 right-6 z-50 flex size-12 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+        className="absolute top-6 right-6 z-[130] pointer-events-auto flex size-12 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -174,9 +183,12 @@ export function ImageViewer({
       {images.length > 1 && (
         <button
           type="button"
-          onClick={handlePrev}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePrev();
+          }}
           aria-label="Previous image"
-          className="absolute left-2 sm:left-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-[color,transform] hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+          className="absolute left-2 sm:left-6 top-1/2 z-[130] pointer-events-auto -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-[color,transform] hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -197,9 +209,12 @@ export function ImageViewer({
       {images.length > 1 && (
         <button
           type="button"
-          onClick={handleNext}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleNext();
+          }}
           aria-label="Next image"
-          className="absolute right-2 sm:right-6 top-1/2 z-50 -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-[color,transform] hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+          className="absolute right-2 sm:right-6 top-1/2 z-[130] pointer-events-auto -translate-y-1/2 flex items-center justify-center p-2 sm:p-3 text-white/60 transition-[color,transform] hover:text-white active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -252,6 +267,7 @@ export function ImageViewer({
           />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

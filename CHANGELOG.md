@@ -7,14 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-06
+
+### Added
+- **WhatsApp CTA Redirection Architecture** (`src/content.ts`, `CONTENT.md`): Centralized WhatsApp (`https://wa.me/923350157000`) link generation with pre-composed, contextual messages for Header ("Join Fitlat"), Hero ("Book a Tour"), Tour Preview Modal ("Join Fitlat"), and all 3 Pricing tiers (Student, Casual, Professional Athlete).
+- **Global Pointer Cursor Style** (`src/app/globals.css`): Added base layer CSS rule enforcing `cursor: pointer` across all button, link, dialog trigger, and interactive components.
+
 ### Fixed
+- **Image Lightbox Close Button** (`src/components/fitlat/image-viewer.tsx`): Fixed close button unresponsiveness by elevating lightbox stacking context to `z-[120]` / `z-[130]`, mounting via React `createPortal` to `document.body`, and stopping click event propagation.
+- **Tour Modal Hardcoded Link** (`src/components/fitlat/tour-modal.tsx`): Replaced hardcoded `#membership` anchor with typed `content.tourModal.ctaHref` configuration.
+
+### Changed
+- **Localized Pakistani Testimonials** (`src/content.ts`, `CONTENT.md`, `src/components/fitlat/gallery-cell.tsx`): Updated member quotes and hero social proof avatars from placeholder names to authentic Pakistani names (`Zainab Malik`, `Bilal Ahmed`, `Hamza Khan`).
+- **Mobile Menu Footer Redesign** (`src/components/fitlat/mobile-menu.tsx`): Redesigned drawer bottom section into a 2-column parallel aligned grid with bulleted operational hours in white text on the left and stacked phone/social channels on the right with consistent icon spacing and touch targets.
+- **Header Team Navigation Label** (`src/content.ts`, `CONTENT.md`): Updated navigation label from "Coaches" to "Team".
+
+### Fixed (Previous Patches)
 - **Logo path fidelity** (`src/components/fitlat/logo-mark.tsx`): Re-traced SVG path from JPEG source using 8× upsample + line-fit + corner-intersection (IoU 0.973 vs 0.909 previously). Sharp corners restored, head circle center/radius corrected.
 - **Intro path origin dot artifacts** (`src/components/fitlat/loader.tsx`): Fixed visible round-dot artifacts at path start coordinates during stroke animation caused by zero-length initial dash under `stroke-linecap: round`. Arc rendering now uses `strokeDashoffset = -tail` with single dash.
 - **Intro logo disappears during flight** (`src/components/fitlat/loader.tsx`): Flight target measurement now compensates for Tailwind v4's standalone `translate` CSS property in addition to `transform`.
 - **Header slide-down never animates** (`src/components/fitlat/site-header.tsx`): Added `translate` to the header's inline `transition` property list — Tailwind v4 emits standalone `translate`, not `transform`.
 - **Mobile footer URL bar clipping** (`src/components/fitlat/site-footer.tsx`): Fixed clipping of the bottom FITLAT wordmark on iPhone Safari (bottom URL bar) and mobile Chrome (top URL bar) by migrating to `100svh`, adding `env(safe-area-inset-bottom)` padding, arranging navigation links in a 3-column row, and applying proportional `max-h-[26svh]` to the SVG.
 
-### Changed
+### Changed (Previous Patches)
 - **Mobile gallery two-tap engagement** (`src/components/fitlat/gallery-cell.tsx`, `gallery-section.tsx`): On touch devices (`@media (hover: none)`), the first tap engages the card's hover animation (photo reveal, orange tint, and diagonal expand arrow), and the second tap opens the fullscreen lightbox viewer.
 - **Lightbox navigation arrows** (`src/components/fitlat/image-viewer.tsx`): Streamlined left/right controls from 56px circular buttons with large icons to minimal, smaller 'just arrows' chevrons positioned closer to the screen edges.
 - **Intro duration & motion model** (`src/components/fitlat/loader.tsx`): 5.00s → 4.00s. Continuous constant-velocity trace replaces stitched `power1.inOut` clips with dead gaps. Dual `<path>` lockstep tracing eliminates the circle-to-body teleport seam.
